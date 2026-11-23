@@ -2,11 +2,11 @@
 
 军团战争式（Legion-TD-like）1v1 对战塔防，浏览器里直接玩，不用安装。
 
-**开始玩：** https://yhofriend.github.io/tdgame/
+**开始玩（电脑）：** 打开本仓库的 [Releases](https://github.com/yhofriend/tdgame/releases/latest)，下载 `twilight-legion.html`，双击用 Chrome 或 Edge 打开。不需要安装，也不需要联网。
 
-- 电脑用 Chrome 或 Edge 打开最好；手机、平板也能打开（横屏更好）。
 - 有显卡加速时是 3D 画面；没有时会自动换成 2D 画面（同一批模型预先渲染），开局时会提示一次。设置里的「画面」可以手动切换，「画质」调低会更流畅。
-- 第一次打开要下载几十 MB 资源，请稍等进度条走完。
+- 文件约 57 MB，打开后要加载几秒钟。
+- 在线版（手机也能直接打开）：仓库公开并开启 GitHub Pages 后，地址是 https://yhofriend.github.io/tdgame/
 
 ## 怎么玩
 
@@ -18,4 +18,4 @@
 
 ---
 
-Legion-TD-style 1v1 tower defense that runs in the browser. Play: https://yhofriend.github.io/tdgame/ — 3D with GPU acceleration, otherwise an automatic 2D mode. Feedback welcome in Issues.
+Legion-TD-style 1v1 tower defense that runs in the browser. Play: download twilight-legion.html from Releases and open it in desktop Chrome or Edge (offline, no install). 3D with GPU acceleration, otherwise an automatic 2D mode. Feedback welcome in Issues.
