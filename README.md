@@ -4,10 +4,10 @@
 
 **在线试玩：** https://yhofriend.github.io/tdgame/
 
-- 电脑用 Chrome 或 Edge 打开最好。手机、平板也能打开，但还没专门适配触屏，体验以电脑为准（手机请横屏）。
+- 电脑用 Chrome 或 Edge 打开最好。手机、平板也能玩（横屏、竖屏都可以，双指缩放），但还没在真机上大量测试，体验以电脑为准。
 - 有显卡加速时是 3D 画面；没有时会自动换成 2D 画面（同一批模型预先渲染），开局时会提示一次。设置里的「画面」可以手动切换，「画质」调低会更流畅。
 - 第一次打开要下载几十 MB 资源，请等进度条走完。
-- 离线版：在 [Releases](https://github.com/yhofriend/tdgame/releases/latest) 下载 `twilight-legion.html`（约 57 MB），双击用 Chrome 或 Edge 打开，不需要联网。
+- 离线版：在 [Releases](https://github.com/yhofriend/tdgame/releases/latest) 下载 `twilight-legion.html`（约 60 MB），双击用 Chrome 或 Edge 打开，不需要联网。
 
 ## 怎么玩
 
