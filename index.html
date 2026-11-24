@@ -486,6 +486,7 @@ body.dragging-unit .dock-body { visibility: hidden; }
 /* popover */
 .popover {
   width: 360px; padding: 10px 12px 12px; border-radius: 12px; pointer-events: auto; user-select: text;
+  max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); overflow: hidden auto; overscroll-behavior: contain;
   background: linear-gradient(180deg, rgba(32, 24, 16, 0.97), rgba(18, 13, 9, 0.97));
   border: 1px solid rgba(232, 196, 110, 0.6);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7), 0 12px 32px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 230, 170, 0.15);
@@ -676,6 +677,8 @@ body.dragging-unit .dock-body { visibility: hidden; }
 .settings .set-renderer { flex-wrap: wrap; border-bottom: 0; padding-bottom: 2px; }
 .settings .set-renderer .set-k { display: flex; flex-direction: column; gap: 1px; }
 .settings .set-renderer .segs { margin-left: auto; }
+.settings .set-quality .set-k { display: flex; flex-direction: column; gap: 1px; }
+.settings .set-quality.has-note { border-bottom: 0; padding-bottom: 2px; }
 .settings .set-now { font-size: 12px; font-weight: 600; color: var(--muted); }
 .settings .set-note { margin: 0; padding: 0 0 8px; font-size: 12px; line-height: 1.45; color: var(--muted); border-bottom: 1px solid var(--line-2); }
 
@@ -1054,6 +1057,184 @@ body.no-dmg-numbers #fx-text { display: none !important; }
   .king.opp .k-sum { display: block; }
   .king.opp { min-width: 230px; }
   .king.opp .k-body { gap: 2px; }
+}
+
+/* phone layouts come last: they override the desktop-height blocks above (761–1180 px wide, ≤ 820 px high) */
+/* small phones held upright (360–430 px wide): both top-bar rows fit without overlap or clipping — narrower wave
+   banner and resource pills, the hire cost under its "+", the kings without the crown icon (QA 2026-11-23 FB-7) */
+@media (max-width: 430px) {
+  .topbar { column-gap: 4px; padding-left: max(0px, calc(var(--gl) - 13px)); padding-right: max(0px, calc(var(--gr) - 13px)); }
+  .tb-left { gap: 4px; }
+  .wave-banner { width: 116px; border-width: 0 30px; border-image-width: 0 30px; }
+  .wave-num { font-size: 11px; }
+  .phase-name { font-size: 14px; }
+  .phase-time { font-size: 15px; }
+  .tb-res { gap: 3px; min-width: 0; }
+  .res { padding: 0 4px 0 3px; gap: 2px; }
+  .res-ico, .res-ico .uico { width: 20px; height: 20px; }
+  .res-ico.crystal .ico { width: 18px; height: 18px; }
+  .res-val { font-size: 15px; }
+  .res-sub { font-size: 11px; white-space: nowrap; }
+  .hire-btn { flex-direction: column; justify-content: center; gap: 0; height: 40px; min-width: 26px; padding: 0 3px; margin-left: 1px; line-height: 1; }
+  .hire-btn small { font-size: 10px; }
+  .hire-btn .ico { width: 14px; height: 14px; }
+  .king { overflow: hidden; padding: 2px 5px; gap: 3px; container-type: inline-size; flex-wrap: wrap; align-content: center; row-gap: 3px; }
+  .king .k-ico { display: none; }
+  .king .k-body { min-width: 24px; }
+  .king .k-name { font-size: 11px; text-overflow: clip; }
+  .king b { font-size: 12px; min-width: 0; letter-spacing: -0.02em; }
+  .btn-ready { padding: 0 10px; }
+  .btn-ready .ready-ico { display: none; }
+}
+
+/* phones held sideways (short landscape, e.g. 844×390 / 667×375): one top-bar row, the intel strip as its one-line
+   summary (tap to open) and a low one-row card shelf, so the battlefield keeps ~60 % of the height; the popover gets
+   wider and shorter and scrolls with its buttons pinned (QA 2026-11-23 FB-1) */
+@media (orientation: landscape) and (max-height: 520px) {
+  .topbar { flex-wrap: nowrap; min-height: 0; gap: 6px; padding-top: 0; padding-bottom: 0; border-width: 4px 8px; }
+  .tb-left { flex: 0 1 auto; gap: 6px; justify-content: flex-start; min-width: 0; }
+  .tb-res { gap: 4px; }
+  .wave-banner { width: 122px; height: 38px; margin: -2px 0; border-width: 0 30px; border-image-width: 0 30px; }
+  .wave-num { font-size: 11px; }
+  .phase-name { font-size: 13px; }
+  .phase-time { font-size: 15px; }
+  .phase-bar { bottom: 4px; left: -20px; right: -20px; }
+  .res { height: 36px; padding: 0 6px 0 4px; gap: 3px; }
+  .res-ico, .res-ico .uico { width: 22px; height: 22px; }
+  .res-ico.crystal .ico { width: 20px; height: 20px; }
+  .res-val { font-size: 15px; }
+  .res-sub { font-size: 11px; white-space: nowrap; }
+  .hire-btn { height: 30px; }
+  .tb-kings { flex: 1 1 0; gap: 4px; min-width: 0; }
+  .king, .king.opp { min-width: 0; flex: 1 1 0; height: 36px; padding: 2px 6px 2px 4px; gap: 4px; overflow: hidden; container-type: inline-size; flex-wrap: wrap; align-content: center; row-gap: 2px; }
+  .king .k-ico .uico { width: 20px; height: 20px; }
+  .king .k-body { min-width: 24px; gap: 2px; }
+  .king .k-name { font-size: 11px; }
+  .king b { font-size: 13px; min-width: 0; }
+  .king.opp .k-sum { display: none; }
+  .k-bar { min-width: 20px; height: 7px; }
+  .tb-ctrl { gap: 4px; }
+  .btn-ready { height: 36px; padding: 0 10px 0 6px; font-size: 15px; }
+  .btn-ready .ready-ico .uico { width: 20px; height: 20px; }
+  .btn-ready .ready-sub { display: none; }
+  .btn-tactic { height: 36px; }
+  .btn-tactic .tactic-txt { display: none; }
+  .speed .spd:not(.spd-cycle) { display: none; }
+  .speed { padding: 0; border: 0; background: none; }
+  .spd-cycle { display: block; width: 40px; height: 36px; border-radius: 9px; background: linear-gradient(180deg, #3b2f22, #1f1810); border: 1px solid var(--line); color: var(--gold-hi); }
+  .icon-btn { width: 40px; height: 36px; }
+
+  .intel { min-height: 30px; padding-top: 0; padding-bottom: 0; }
+  .in-toggle { display: flex; align-items: center; gap: 6px; flex: 1 1 auto; min-width: 0; min-height: 30px; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; color: var(--ink); text-shadow: var(--ts); }
+  .in-summary { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; }
+  .in-summary b { color: #e6d6ff; }
+  .in-summary .tchip { vertical-align: -0.1em; }
+  .sum-boss { color: #ff9a86; font-weight: 800; }
+  .sum-merc { color: #ffb4a0; font-weight: 700; }
+  .in-chev .ico { width: 16px; height: 16px; color: var(--muted); transition: transform 0.2s; }
+  .intel.open .in-chev .ico { transform: rotate(180deg); }
+  .in-body {
+    display: none; position: absolute; left: 0; right: 0; top: 100%; z-index: 30; flex-wrap: wrap; gap: 8px;
+    padding: 8px var(--gr) 10px var(--gl); background: rgba(16, 12, 20, 0.97); border-bottom: 1px solid rgba(180, 140, 255, 0.35); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
+  }
+  .intel.open .in-body { display: flex; }
+  .in-groups, .in-counter, .in-mercs { flex-wrap: wrap; }
+  .in-report { height: 26px; padding: 0 10px; margin-left: 6px; font-size: 13px; }
+
+  .dock { gap: 6px; padding-top: 0; padding-bottom: 0; border-width: 4px 8px; }
+  .dock-tabs { width: 46px; gap: 3px; }
+  .dock-tab { flex-direction: row; justify-content: center; gap: 0; padding: 0; min-height: 0; flex: 1 1 0; }
+  .dock-tab .tab-label { display: none; }
+  .dock-tab .uico { width: 20px; height: 20px; }
+  .tab-badge { position: absolute; top: 0; right: 0; margin: 0; padding: 0 3px; font-size: 10px; }
+  .dock-head, .dock[data-tab="mercs"]:not(.collapsed) .dock-head { display: none; }
+  .dock-panel { display: flex; gap: 5px; }
+  .card { height: 74px; max-width: 150px; }
+  .card .c-portrait { height: 36px; }
+  .card .c-portrait img { width: 64px; height: 64px; top: -4px; }
+  .card .c-portrait::after { height: 12px; }
+  .c-name, html[data-lang="zh"] .c-name, html[data-lang="en"] .card .c-name { font-size: 13px; margin: 0 5px; white-space: nowrap; display: block; line-height: 1.2; max-height: none; }
+  html[data-lang="en"] .card { height: 74px; }
+  html[data-lang="en"] .card .c-name { font-size: 12px; }
+  .c-foot { padding: 1px 5px 3px; }
+  .c-types .tchip .ico { width: 14px; height: 14px; }
+  .c-types .role-ico { display: none; }
+  .c-rally, .c-income { font-size: 11px; }
+  .c-key { display: none; }
+  .c-cost { top: 2px; left: 2px; padding: 1px 5px 1px 2px; }
+  .c-cost .uico { width: 15px; height: 15px; }
+  .c-cost b { font-size: 13px; }
+  .c-reason { top: 8px; left: 3px; right: 3px; font-size: 11px; }
+  .card.merc::before { display: none; }
+  .king-panel { display: flex; gap: 5px; }
+  .kp-king { grid-column: auto; min-width: 0; padding: 3px 6px 3px 3px; }
+  .kp-portrait img { width: 46px; height: 46px; }
+  .kp-name { font-size: 13px; }
+  .kp-stats { display: none; }
+  .kp-hp .k-bar { width: 64px; }
+  .kp-ups { display: flex; gap: 5px; }
+  .card.kp-up, .card.kp-workers { height: 74px; min-height: 0; max-width: 150px; padding: 4px 6px; gap: 1px; }
+  .kp-up-desc { display: none; }
+  .kp-up-ico .uico { width: 20px; height: 20px; }
+  .kp-up-name { font-size: 13px; }
+  .kp-tactics { grid-column: auto; flex: 0 1 160px; flex-direction: column; flex-wrap: nowrap; }
+  .dock.collapsed { padding-top: 0; padding-bottom: 0; }
+  .dock.collapsed .dock-tabs { flex-direction: row; width: auto; }
+  .dock.collapsed .dock-tab { min-height: 34px; width: 44px; flex: none; }
+  .dock-slim { min-height: 34px; padding: 0 10px; font-size: 13px; }
+
+  .popover { width: min(540px, calc(100vw - 16px)); padding: 6px 9px 0; }
+  .pp-portrait { width: 40px; height: 40px; }
+  .pp-name { font-size: 16px; }
+  .pp-close { width: 36px; height: 36px; }
+  .pp-hp { margin: 4px 0 3px; }
+  .pp-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 10px; font-size: 13px; }
+  .st { padding: 1px 0; }
+  .pp-abs, .pp-lines { margin-top: 4px; }
+  .pp-desc, .pb-ch, .pbtn kbd, .ab-badge { display: none; }
+  .pp-btns { position: sticky; bottom: 0; z-index: 2; margin: 6px -9px 0; padding: 6px 9px 8px; background: rgba(18, 13, 9, 0.98); }
+  .pbtn { min-height: 44px; padding: 4px 6px; }
+  .toasts { top: 74px; }
+  .discover { top: 18%; }
+}
+/* narrow phones sideways (≤ 760 px wide, e.g. 667×375): the income / crystal-rate lines and the flag icon give their
+   width to the kings (both stay in the tooltips) */
+@media (orientation: landscape) and (max-height: 520px) and (max-width: 760px) {
+  .res-sub, .btn-ready .ready-ico { display: none; }
+  .topbar { gap: 4px; }
+  .wave-banner { width: 98px; border-width: 0 24px; border-image-width: 0 24px; }
+  .btn-ready { padding: 0 9px; }
+  .icon-btn, .spd-cycle { width: 36px; }
+}
+/* main menu on a phone held sideways: smaller title and race cards (names + faces; the descriptions are in the
+   codex), so the start button is on the first screen */
+@media (orientation: landscape) and (max-height: 520px) {
+  .menu-inner { gap: 6px; padding-top: 6px; padding-bottom: 12px; }
+  .menu-crest { display: none; }
+  .menu-title h1 { font-size: 30px; }
+  .menu-sub { font-size: 11px; letter-spacing: 0.3em; }
+  .sec-h { margin-bottom: 4px; font-size: 14px; }
+  .races { grid-template-columns: 1fr 1fr 0.62fr; gap: 8px; }
+  .race-card { padding: 8px 10px; gap: 4px; }
+  .race-random { grid-column: auto; flex-direction: column; align-items: stretch; }
+  .rc-faces, .race-random .rc-faces { height: 62px; width: auto; margin: -8px -10px 0; }
+  .rc-faces .rf { width: 62px; height: 62px; }
+  .rc-faces .rf0 { width: 68px; height: 68px; }
+  .rc-q, .race-random .rc-q { font-size: 40px; }
+  .rc-name { font-size: 15px; }
+  .rc-desc, .rc-traits, .menu-foot { display: none; }
+  .diff-desc { margin-top: 2px; font-size: 13px; }
+  .menu-start .start-btn { min-height: 44px; }
+  .menu-links .btn { min-height: 38px; }
+}
+/* king pills on phones are size containers (above): a narrow pill drops its name and stacks the percentage over the
+   bar, so no text ever spills into the next pill (the exact HP is in the tooltip) */
+@container (max-width: 100px) { .king .k-ico { display: none; } }
+@container (max-width: 76px) {
+  .king .k-name { display: none; }
+  .king b { order: -1; flex: 1 0 100%; text-align: center; font-size: 11px; line-height: 1; letter-spacing: -0.04em; }
+  .king .k-body { flex: 1 0 100%; min-width: 0; }
+  .king .k-bar { min-width: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -13161,6 +13342,7 @@ __m[27] = await (async () => {
 // never hand a raw asset path to fetch()/Image/Audio/TextureLoader yourself.
 //   assetUrl(path)          → URL usable as <img src>, TextureLoader.load(), CSS url(), new Audio()
 //   fetchArrayBuffer(path)  → ArrayBuffer (GLB, audio for decodeAudioData, …)
+//   fetchBlob(path, onProgress) → Blob, with byte progress while it downloads (2D sprite atlases)
 //   fetchText / fetchJSON   → text / parsed JSON
 // Paths are relative to the page root (index.html), with no leading '/'.
 
@@ -13235,6 +13417,39 @@ const urlCache = new Map();
   return res.arrayBuffer();
 }
 
+/** Blob of an asset (typed by its extension). onProgress(received, total) reports the download as it streams in
+ *  (total = Content-Length, 0 when the server does not say; embedded assets report once, complete), so a loading bar
+ *  can move while big files (2D sprite atlases) download instead of only when each one has arrived. */
+ async function fetchBlob(path, onProgress) {
+  const k = key(path);
+  const type = MIME[k.split(/[?#]/)[0].split('.').pop().toLowerCase()] || 'application/octet-stream';   // 'x.webp?retry=1'
+  const tell = (got, total) => { if (onProgress) try { onProgress(got, total); } catch (e) { /* ignore */ } };
+  if (hasEmbedded(path)) {
+    const bytes = b64ToBytes(embedded()[k]);
+    tell(bytes.length, bytes.length);
+    return new Blob([bytes], { type });
+  }
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`fetch ${path}: HTTP ${res.status}`);
+  const total = Number(res.headers.get('content-length')) || 0;
+  if (!onProgress || !res.body || !res.body.getReader) {
+    const b = await res.blob();
+    tell(b.size, total || b.size);
+    return b.type ? b : new Blob([b], { type });
+  }
+  const reader = res.body.getReader();
+  const parts = [];
+  let got = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    parts.push(value);
+    got += value.length;
+    tell(got, total);
+  }
+  return new Blob(parts, { type });
+}
+
 /** Text of an asset. */
  async function fetchText(path) {
   if (hasEmbedded(path)) return new TextDecoder().decode(b64ToBytes(embedded()[key(path)]));
@@ -13248,7 +13463,7 @@ const urlCache = new Map();
   return JSON.parse(await fetchText(path));
 }
 
-;return { "isOfflineBuild": isOfflineBuild, "hasEmbedded": hasEmbedded, "embeddedCount": embeddedCount, "assetUrl": assetUrl, "fetchArrayBuffer": fetchArrayBuffer, "fetchText": fetchText, "fetchJSON": fetchJSON };
+;return { "isOfflineBuild": isOfflineBuild, "hasEmbedded": hasEmbedded, "embeddedCount": embeddedCount, "assetUrl": assetUrl, "fetchArrayBuffer": fetchArrayBuffer, "fetchBlob": fetchBlob, "fetchText": fetchText, "fetchJSON": fetchJSON };
 })();
 // ── src/render/glbfetch.js
 __m[28] = await (async () => {
@@ -17305,7 +17520,9 @@ function propGeometry(lib, id) {
         s.im.setMatrixAt(s.n++, _m);
       }
     }
-    if (MAGIC[kind]) {
+    // the orb glow is a fresh short-lived particle pair per frame; particles do not age while paused (fx.update(0)),
+    // so emitting at dt = 0 would stack additive pairs on one spot into a white disc: the last pair stays instead
+    if (MAGIC[kind] && dt > 0) {
       const c = crgb(p.vis.glow || p.vis.color || '#ffffff');
       const sz = p.big ? 0.55 : 0.38;
       this.fx.add.add(x, y, z, 0, 0, 0, Math.max(0.02, dt * 1.5), sz, sz, c[0], c[1], c[2], 1, c[0], c[1], c[2], 1, P.GLOW);
@@ -18548,7 +18765,9 @@ function variantOf(vis) {
   }
 
   // ───────────────────────────── per-frame
-  update(dt, rdt, camera, frustum) {
+  /** dt = game time step, rdt = real time step (0 while paused), fdt = the FX system's step for this frame (index.js
+   *  fxDt: particles emitted here age by it before they are drawn). */
+  update(dt, rdt, camera, frustum, fdt = rdt) {
     this.time += dt;
     const fx = this.fx;
     const list = this.all;
@@ -18578,7 +18797,11 @@ function variantOf(vis) {
         if (a.shield > 0 && a.maxHp > 0) {
           const r = a.height * 0.62 + 0.1;
           const rr = (r * 2) / fx.add.sizeMul;
-          fx.add.add(a.x, a.yOff + a.height * 0.5, a.z, 0, 0, 0, Math.max(0.017, rdt * 1.2), rr, rr, 0.75, 0.88, 1, 0.55, 0.75, 0.88, 1, 0.55, P.BUBBLE);
+          // one bubble per frame: it must outlive this frame's FX step (fdt ≈ 1.6× real time at 2× / 3× speed), or
+          // it is removed before it is ever drawn and shields vanish at higher speeds. Alpha 0.42 (was 0.55): late elf
+          // fights shield most of the line at once, and a stronger bubble turned the whole fight milky (QA FA-5; the
+          // 2D renderer's bubble follows at the same ratio)
+          fx.add.add(a.x, a.yOff + a.height * 0.5, a.z, 0, 0, 0, Math.max(0.017, Math.max(rdt, fdt) * 1.2), rr, rr, 0.75, 0.88, 1, 0.42, 0.75, 0.88, 1, 0.42, P.BUBBLE);
         }
         if ((a.statusMask & ST.burn) && Math.random() < dt * 6) fx.motes(a.x, a.yOff + a.height * 0.3, a.z, '#ff8a3a', 1, a.radius * 0.6, 1.2, 0.5, 0.14, P.FLAME);
         if ((a.statusMask & (ST.poison | ST.plague)) && Math.random() < dt * 4) fx.motes(a.x, a.yOff + a.height * 0.4, a.z, '#8dff5a', 1, a.radius * 0.6, 0.7, 0.7, 0.1, P.BUBBLE);
@@ -19304,6 +19527,7 @@ function makeWebGL(opts) {
   parent.appendChild(canvas);
   let contextLost = false;
   canvas.addEventListener('webglcontextlost', (e) => {
+    if (!canvas.isConnected) return;   // a disposed renderer handing its context back (dispose → forceContextLoss)
     e.preventDefault();
     contextLost = true;
     if (opts.onContextLost) try { opts.onContextLost(); } catch (er) { /* ignore */ }
@@ -19343,11 +19567,19 @@ function makeWebGL(opts) {
   report(0, 'start');
   const lib = new Library(renderer);
   lib.clipPlanes = [new THREE.Plane(new THREE.Vector3(0, 0, 1), -RIFT_Y)];
-  await lib.load(Object.keys(MODELS), (f, label) => report(f * 0.92, label));
-  if (!lib.models.size) {
-    const err = new Error('3D 模型加载失败 / Failed to load the 3D models');
-    err.code = 'ASSETS_FAILED';
-    throw err;
+  try {
+    await lib.load(Object.keys(MODELS), (f, label) => report(f * 0.92, label));
+    if (!lib.models.size) {
+      const err = new Error('3D 模型加载失败 / Failed to load the 3D models');
+      err.code = 'ASSETS_FAILED';
+      throw err;
+    }
+  } catch (e) {
+    // no renderer object is handed out: take the canvas and its WebGL context with us, or a retry from the menu
+    // would stack another canvas + context on the battlefield (the removed canvas reports no context loss)
+    canvas.remove();
+    try { renderer.dispose(); renderer.forceContextLoss(); } catch (er) { /* ignore */ }
+    throw e;
   }
 
   const pAtlas = particleAtlas();
@@ -19552,7 +19784,7 @@ function makeWebGL(opts) {
       camera.updateMatrixWorld();
       projM.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
       frustum.setFromProjectionMatrix(projM);
-      sys.update(adt, paused ? 0 : dt, camera, frustum);
+      sys.update(adt, paused ? 0 : dt, camera, frustum, fxDt);
       proj.update(adt);
       fx.update(fxDt);
       env.update(dt, paused ? null : fx, focus);
@@ -19697,6 +19929,9 @@ function makeWebGL(opts) {
       text.dispose();
       renderer.dispose();
       canvas.remove();
+      // give the WebGL context (GPU memory) back now, not at some later GC: renderer swaps (「画面」 setting, 2D
+      // fallback) would otherwise keep dead contexts alive until the browser starts evicting the oldest ones
+      try { const gl = renderer.getContext(); if (gl && !gl.isContextLost()) renderer.forceContextLoss(); } catch (e) { /* ignore */ }
     },
   };
   return api;
@@ -19710,14 +19945,19 @@ __m[49] = await (async () => {
 // Orthographic view for the Canvas-2D renderer (CONTRACT §12): fixed 46° pitch, camera south of the field.
 //   screen units: su = X, sv = Y·sinθ − Z·cosθ (sv grows downward); zoom = CSS px per unit.
 // Framing follows src/render/camera.js: the lane (portal → king) fitted into the free area inside the view
-// insets, battle close-up ('front'), overview of both lanes, smooth lane focus, wheel / pinch zoom (1 … 2.3×),
-// drag-pan when zoomed, shake. Callers use the 3D renderer's convention (x = world X, y = height, z = lane y).
+// insets, battle close-up ('front'), overview of both lanes, smooth lane focus, wheel / pinch zoom (1 … 2.3×,
+// capped by sprite magnification: MAX_K), drag-pan when zoomed, shake. Callers use the 3D renderer's convention
+// (x = world X, y = height, z = lane y).
 const { LANE_W } = __m[0];
 const { laneX, clamp, damp } = __m[29];
 
  const PITCH = (46 * Math.PI) / 180;
  const SIN = Math.sin(PITCH);
  const COS = Math.cos(PITCH);
+// The user zoom stops at MAX_K device px per unit: ≈ 2× magnification for the ppu-80 infantry keys (CONTRACT
+// §12.1), where the baked frames start to turn mushy (the 3D view stays crisp at any zoom). The fitted framing
+// itself is never cut; in the 1600×900 battle close-up (~127 px/unit) this leaves ≈ 1.25× of wheel zoom.
+ const MAX_K = 160;
 
  class View2D {
   constructor(dom) {
@@ -19748,6 +19988,11 @@ const { laneX, clamp, damp } = __m[29];
     this.z = 40;                     // CSS px per unit (current)
     this.cu = 4.5; this.cv = 6;
     this.bind();
+  }
+
+  /** Largest user zoom factor for the current fitted framing (1 … 2.3, MAX_K). */
+  maxZoom() {
+    return clamp((MAX_K * this.base.span) / this.res, 1, 2.3);
   }
 
   setInsets(ins) {
@@ -19853,6 +20098,13 @@ const { laneX, clamp, damp } = __m[29];
   }
 
   update(dt) {
+    // a zoom chosen on a wider framing (build) must not magnify the sprites past MAX_K in the close-up
+    const mz = this.maxZoom();
+    if (this.zoomGoal > mz) {
+      this.zoomGoal = mz;
+      if (this.zoomGoal <= 1.001) { this.pan.x = 0; this.pan.y = 0; }
+      this.clampPan();
+    }
     this.zoom += (this.zoomGoal - this.zoom) * damp(dt, 0.08);
     // (the 3D rig eases frame-mode changes over ~1.6 s at τ 0.3; the 2D view moves quicker — every moving frame
     // draws the backdrop and sprites unscaled-from-cache, the expensive path on a software canvas)
@@ -19939,7 +20191,7 @@ const { laneX, clamp, damp } = __m[29];
       if (!this.inputEnabled) return;
       e.preventDefault();
       const prev = this.zoomGoal;
-      this.zoomGoal = clamp(this.zoomGoal * Math.exp(-e.deltaY * 0.0015), 1, 2.3);
+      this.zoomGoal = clamp(this.zoomGoal * Math.exp(-e.deltaY * 0.0015), 1, this.maxZoom());
       const p = this.groundAt(e.clientX, e.clientY);
       if (p && this.zoomGoal > prev) {
         const f = (this.zoomGoal - prev) / this.zoomGoal;
@@ -19970,7 +20222,7 @@ const { laneX, clamp, damp } = __m[29];
       if (pinch && ptrs.size === 2) {
         const [a, b] = [...ptrs.values()];
         const d = Math.hypot(a.x - b.x, a.y - b.y);
-        this.zoomGoal = clamp(pinch.z * (d / Math.max(1, pinch.d)), 1, 2.3);
+        this.zoomGoal = clamp(pinch.z * (d / Math.max(1, pinch.d)), 1, this.maxZoom());
         if (this.zoomGoal <= 1.001) { this.pan.x = 0; this.pan.y = 0; }
         return;
       }
@@ -20003,7 +20255,7 @@ const { laneX, clamp, damp } = __m[29];
   }
 }
 
-;return { "PITCH": PITCH, "SIN": SIN, "COS": COS, "View2D": View2D };
+;return { "PITCH": PITCH, "SIN": SIN, "COS": COS, "MAX_K": MAX_K, "View2D": View2D };
 })();
 // ── src/render2d/sprites.js
 __m[50] = await (async () => {
@@ -20011,7 +20263,7 @@ __m[50] = await (async () => {
 // a visual (visuals.js entry + runtime look) to a baked key with graceful fallbacks (same model with another
 // texture / material → another model of the same family → the generic fallback; logged once), and picks the
 // frame for a clip role, a time and a facing (8 sectors, W / NW / SW mirrored from E / NE / SE).
-const { fetchJSON, assetUrl } = __m[27];
+const { fetchJSON, fetchBlob, assetUrl, hasEmbedded } = __m[27];
 const { MODELS } = __m[23];
 
 const TAU = Math.PI * 2;
@@ -20021,6 +20273,7 @@ const MIRROR_OF = { SE: 7, E: 6, NE: 5 };   // baked dir → mirrored sector
 const ROLE_FALLBACK = {
   idle: ['idle', 'move', 'attack'],
   move: ['move', 'idle'],
+  walk: ['walk', 'move', 'idle'],
   attack: ['attack', 'attack2', 'cast', 'idle'],
   attack2: ['attack2', 'attack', 'idle'],
   cast: ['cast', 'attack2', 'attack', 'idle'],
@@ -20028,6 +20281,8 @@ const ROLE_FALLBACK = {
   work: ['work', 'attack', 'idle'],
 };
 const TEX_ORDER = ['elf_high', 'elf_wood', 'elf_dark', 's1', 's2', 's3', '-'];
+/** Largest facing error (radians) at which a clip baked for fewer directions still stands in (walk: E / SE / S). */
+ const COVER_ERR = Math.PI / 4 + 0.01;
 
 function angDist(a, b) {
   let d = Math.abs(a - b) % TAU;
@@ -20035,29 +20290,70 @@ function angDist(a, b) {
   return d;
 }
 
-function loadImage(path) {
+function loadImage(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.decoding = 'async';
     img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error('image failed: ' + path));
-    img.src = assetUrl(path);
+    img.onerror = () => reject(new Error('image failed'));
+    img.src = src;
   });
 }
 
-/** Decode once and keep the pixels resident (a lazily decoded 4k atlas would otherwise be re-decoded).
- *  The decode is forced ON the main thread (drawn into a CPU canvas): an off-thread decode (img.decode(),
- *  createImageBitmap(img)) does not hold Chrome's virtual time, so a headless run under --virtual-time-budget
- *  (the documented selftest / screenshot commands) raced past the 2D load. The pixels then move into an
- *  ImageBitmap (a quick copy of decoded pixels) and the canvas is freed. */
+/**
+ * Download one image file (byte progress through onBytes(got, total)) and decode it into an ImageBitmap that holds
+ * the only resident copy of its pixels.
+ *  - Normally the bytes are decoded off the main thread straight into the bitmap (createImageBitmap(blob)): the
+ *    older path (an <img> drawn into a canvas, then copied into a bitmap) left a second decoded copy of every atlas
+ *    in Chrome's image caches — ≈ 455 MB for the 7 atlases + backdrop, freed only under memory pressure (QA FB-4).
+ *  - An off-thread decode does not hold Chrome's virtual time, so a headless run under --virtual-time-budget (the
+ *    documented selftest / screenshot commands) would race past the load: when the bitmap has not arrived after
+ *    OFF_THREAD_WAIT (instant in virtual time) the file is decoded ON the main thread instead (an <img> of an
+ *    object URL drawn into a CPU canvas), and the late bitmap is closed when it lands.
+ *  - Where an object URL may not be shown (a CSP without blob: in img-src) the asset URL is used instead.
+ * `bust` adds a query to the network URL (the retry after a failed load must not come from a cache).
+ */
+const OFF_THREAD_WAIT = 6000;
 let decodeChain = Promise.resolve();
-async function decoded(path) {
-  const img = await loadImage(path);
-  // one atlas at a time through canvas → bitmap (each step holds ~2 × 64 MB while it runs; the loads above
-  // still run in parallel)
+async function decoded(path, onBytes, bust = '') {
+  const url = bust && !hasEmbedded(path) ? path + (path.includes('?') ? '&' : '?') + bust : path;
+  let blob = null;
+  try {
+    blob = await fetchBlob(url, onBytes);
+  } catch (e) { /* fetch refused (CSP …) or failed: the <img> path below tries the asset URL itself */ }
+  if (blob && typeof createImageBitmap === 'function') {
+    const job = createImageBitmap(blob);
+    let timer = 0;
+    const late = new Promise((res) => { timer = setTimeout(() => res(null), OFF_THREAD_WAIT); });
+    const bmp = await Promise.race([job.catch(() => null), late]);
+    clearTimeout(timer);
+    if (bmp) return bmp;
+    job.then((b) => { if (b && b.close) b.close(); }, () => {});
+  }
+  // main-thread decode
+  let img = null, obj = null;
+  try {
+    if (!blob) throw new Error('no bytes');
+    obj = URL.createObjectURL(blob);
+    img = await loadImage(obj);
+  } catch (e) {
+    if (obj) { URL.revokeObjectURL(obj); obj = null; }
+    try {
+      img = await loadImage(bust ? url : assetUrl(path));
+    } catch (e2) {
+      throw new Error('image failed: ' + path);
+    }
+  }
+  // one atlas at a time through canvas → bitmap (each step holds ~2 × 64 MB while it runs)
   const run = decodeChain.then(() => toBitmap(img));
   decodeChain = run.catch(() => null);
-  return run;
+  try {
+    return await run;
+  } finally {
+    if (obj) URL.revokeObjectURL(obj);
+    img.onload = img.onerror = null;
+    img.removeAttribute('src');
+  }
 }
 
 async function toBitmap(img) {
@@ -20080,6 +20376,14 @@ async function toBitmap(img) {
       return bmp;
     } catch (e) { /* keep the canvas / element */ }
   }
+  if (src === img) {
+    // no bitmap: keep a canvas copy (the element is emptied by the caller)
+    const c = document.createElement('canvas');
+    c.width = img.naturalWidth;
+    c.height = img.naturalHeight;
+    c.getContext('2d').drawImage(img, 0, 0);
+    return c;
+  }
   return src;
 }
 
@@ -20098,6 +20402,7 @@ async function toBitmap(img) {
     this.backdrop = null;        // { img, ppu, sx0, sy0, sx1, sy1 }
     this.warned = new Set();
     this.missing = [];
+    this.failed = [];
     this.frameId = 0;
     this.charScale = 1.45;
     this.kingScale = 1.08;
@@ -20110,27 +20415,46 @@ async function toBitmap(img) {
     this.manifest = man;
     if (man.charScale) this.charScale = man.charScale;
     if (man.kingScale) this.kingScale = man.kingScale;
-    const atl = Object.entries(man.atlases || {});
-    const jobs = atl.length + (man.backdrop ? 1 : 0);
-    let done = 0;
-    const tick = (l) => report(Math.min(1, ++done / Math.max(1, jobs)), l);
-    await Promise.all(atl.map(async ([name, path]) => {
-      try {
-        this.images.set(name, await decoded(path));
-      } catch (e) {
-        console.warn('[render2d] atlas failed', name, e && e.message);
+    const files = Object.entries(man.atlases || {}).map(([name, path]) => ({ name, path }));
+    if (man.backdrop && man.backdrop.image) files.push({ name: 'backdrop', path: man.backdrop.image });
+    // progress: 3/4 for the downloads, by bytes (they run in parallel and would otherwise all finish at the very
+    // end), 1/4 for the decodes
+    const got = new Map(), decodedN = { n: 0 };
+    const DL = 0.75;
+    const tell = (label) => {
+      let f = 0;
+      for (const x of files) {
+        const g = got.get(x.name);
+        f += g ? (g[1] > 0 ? Math.min(1, g[0] / g[1]) : g[2] ? 1 : 0) : 0;
       }
-      tick(name);
+      report(Math.min(1, (DL * f) / Math.max(1, files.length) + ((1 - DL) * decodedN.n) / Math.max(1, files.length)), label);
+    };
+    const results = await Promise.all(files.map(async (x) => {
+      const onBytes = (n, total) => { got.set(x.name, [n, total, false]); tell(x.name); };
+      let img = null;
+      // one retry, past any cache, before the file counts as failed (a dropped connection must not leave the
+      // match with the fallback model for every unit)
+      for (let attempt = 0; attempt < 2 && !img; attempt++) {
+        try {
+          img = await decoded(x.path, onBytes, attempt ? 'retry=' + Date.now() : '');
+        } catch (e) {
+          console.warn('[render2d] ' + (attempt ? 'failed' : 'retrying') + ':', x.name, e && e.message);
+        }
+      }
+      const g = got.get(x.name);
+      got.set(x.name, [g ? g[0] : 0, g ? g[1] : 0, true]);
+      decodedN.n++;
+      tell(x.name);
+      return { x, img };
     }));
-    if (man.backdrop && man.backdrop.image) {
-      try {
-        const img = await decoded(man.backdrop.image);
-        const b = man.backdrop;
+    /** Files that failed even after the retry (main.js tells the player once: units / ground may look wrong). */
+    this.failed = results.filter((r) => !r.img).map((r) => r.x.name);
+    for (const r of results) {
+      if (!r.img) continue;
+      if (r.x.name === 'backdrop') {
+        const b = man.backdrop, img = r.img;
         this.backdrop = { img, ppu: b.ppu || img.width / Math.max(1e-6, b.sx1 - b.sx0), sx0: b.sx0, sy0: b.sy0, sx1: b.sx1, sy1: b.sy1, edge: b.edge || '#6c5018' };
-      } catch (e) {
-        console.warn('[render2d] backdrop failed', e && e.message);
-      }
-      tick('backdrop');
+      } else this.images.set(r.x.name, r.img);
     }
     for (const [name, p] of Object.entries(man.props || {})) {
       const img = this.images.get(p.atlas);
@@ -20143,7 +20467,10 @@ async function toBitmap(img) {
     }
     this.places = man.places || null;
     for (const key of Object.keys(man.keys)) this.prepare(key);
-    if (!this.entries.size) throw new Error('no sprite atlas loaded');
+    if (!this.entries.size) {
+      this.release();
+      throw new Error('no sprite atlas loaded');
+    }
   }
 
   /** Free the decoded bitmaps (dispose): ImageBitmap.close() returns the memory at once. */
@@ -20175,7 +20502,7 @@ async function toBitmap(img) {
     if (!ok) return;
     const clips = {};
     for (const [role, c] of Object.entries(k.clips || {})) {
-      const table = this.dirTable(c.dirs || {}, frames);
+      const table = this.dirTable(c.dirs || {}, frames, role);
       if (!table) continue;
       const times = Array.isArray(c.times) && c.times.length === table.n ? c.times.map(Number) : null;
       clips[role] = { role, duration: Math.max(0.05, c.duration || 1), loop: c.loop !== false && role !== 'death', impact: c.impact, n: table.n, table, times };
@@ -20186,8 +20513,10 @@ async function toBitmap(img) {
     this.entries.set(key, { key, model: k.model || parts[0], tex: parts[1], mat: parts[2], ppu: k.ppu || 96, clips, meta, frames });
   }
 
-  /** 8-sector table → { n, [s]: { frames, mirror } } using the nearest baked direction. */
-  dirTable(dirs, frames) {
+  /** 8-sector table → { n, [s]: { frames, mirror, dir, err } } using the nearest baked direction (err = its
+   *  angular distance). Death is baked N + S only: E / W are exact ties and go to S (the unit falls away from the
+   *  camera, front visible) instead of turning its back to fall toward the camera. */
+  dirTable(dirs, frames, role) {
     const opts = [];
     let n = 0;
     for (const [d, list] of Object.entries(dirs)) {
@@ -20195,8 +20524,8 @@ async function toBitmap(img) {
       const fr = list.map((i) => frames[i]).filter(Boolean);
       if (!fr.length) continue;
       n = Math.max(n, fr.length);
-      opts.push({ yaw: DIR_YAW[d], frames: fr, mirror: false });
-      if (MIRROR_OF[d] !== undefined) opts.push({ yaw: (MIRROR_OF[d] * Math.PI) / 4, frames: fr, mirror: true });
+      opts.push({ yaw: DIR_YAW[d], frames: fr, mirror: false, dir: d });
+      if (MIRROR_OF[d] !== undefined) opts.push({ yaw: (MIRROR_OF[d] * Math.PI) / 4, frames: fr, mirror: true, dir: d });
     }
     if (!opts.length) return null;
     const t = { n };
@@ -20204,10 +20533,10 @@ async function toBitmap(img) {
       const yaw = (s * Math.PI) / 4;
       let best = null, bd = 1e9;
       for (const o of opts) {
-        const d = angDist(yaw, o.yaw) + (o.mirror ? 1e-4 : 0);
+        const d = angDist(yaw, o.yaw) + (o.mirror ? 1e-4 : 0) + (role === 'death' && o.dir === 'N' ? 2e-4 : 0);
         if (d < bd) { bd = d; best = o; }
       }
-      t[s] = best;
+      t[s] = { frames: best.frames, mirror: best.mirror, dir: best.dir, err: angDist(yaw, best.yaw) };
     }
     return t;
   }
@@ -20260,23 +20589,24 @@ async function toBitmap(img) {
     return entry.clips.idle || Object.values(entry.clips)[0];
   }
 
-  /** Frame of clip `c` at clip time t (seconds) for sector s → { fr, mirror }. */
-  frame(c, t, s, out) {
+  /** Frame of clip `c` at clip time t (seconds) for sector s → { fr, mirror }. loop: wrap the time (default: the
+   *  clip's own flag; a base loop that fell back to a one-shot clip — e.g. 'work' → 'attack' — passes true). */
+  frame(c, t, s, out, loop = c.loop) {
     const d = c.table[s] || c.table[4];
     const n = d.frames.length;
     let k;
     const u = t / c.duration;
     if (c.times && n > 1) {
       // nearest baked moment (the bake moves the attack / cast frame nearest to `impact` onto it)
-      const uu = c.loop ? u - Math.floor(u) : Math.max(0, Math.min(1, u));
+      const uu = loop ? u - Math.floor(u) : Math.max(0, Math.min(1, u));
       let bd = 9;
       k = 0;
       for (let i = 0; i < n; i++) {
         let dd = Math.abs(uu - c.times[i]);
-        if (c.loop && dd > 0.5) dd = 1 - dd;
+        if (loop && dd > 0.5) dd = 1 - dd;
         if (dd < bd) { bd = dd; k = i; }
       }
-    } else if (c.loop) {
+    } else if (loop) {
       k = Math.floor(u * n + 0.5) % n;
       if (k < 0) k += n;
     } else {
@@ -20307,7 +20637,7 @@ async function toBitmap(img) {
   return s;
 }
 
-;return { "visualKey": visualKey, "SpriteBank": SpriteBank, "sectorOf": sectorOf };
+;return { "COVER_ERR": COVER_ERR, "visualKey": visualKey, "SpriteBank": SpriteBank, "sectorOf": sectorOf };
 })();
 // ── src/render2d/gfx.js
 __m[51] = await (async () => {
@@ -20543,20 +20873,25 @@ const RGB = new Map();
   return c;
 }
 
-/** Vertical light column sprite (white): bright near the base, fading upward, soft sides and a soft foot. */
- function pillarSprite(w = 48, h = 160) {
+/**
+ * Vertical light column sprite (white) after the 3D pillar (src/render/fxprims.js PILLAR_FRAG: an open additive
+ * cylinder, both faces drawn, colour × (1 + 0.6 (1 − h)), alpha (1 − h)^1.4 · smoothstep(0, 0.08, h + 0.02) ·
+ * stripes). One face per pass — FxSystem2D.pillar draws it twice: the stripes of a face seen side-on
+ * (0.65 + 0.35 cos 6θ, θ = asin of the offset from the axis) and, at unit height (the lower ~40 %), about a third
+ * of the strength: there the 3D column wraps the unit it rises from, whose body hides the back face, and the units
+ * standing in front hide it (depth test); drawn at full strength over the crowd, the 2D column was a white block.
+ */
+ function pillarSprite(w = 64, h = 160) {
   const c = makeCanvas(w, h), g = c.getContext('2d');
   const img = g.createImageData(w, h), d = img.data;
+  const sstep = (e0, e1, x) => { const t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
   for (let y = 0; y < h; y++) {
-    const hh = 1 - y / (h - 1);            // 0 at the top, 1 at the base
-    const up = 1 - hh;                      // height fraction from the base
-    const foot = Math.min(1, up / 0.1);     // soft foot (the 3D cylinder fades in over its first few %)
-    const fall = Math.pow(hh, 1.4) * foot * foot * (3 - 2 * foot);
+    const hh = 1 - y / (h - 1);             // 3D h: 0 at the base (bottom row), 1 at the top
+    const fall = (1 + 0.6 * (1 - hh)) * Math.pow(1 - hh, 1.4) * sstep(0, 0.08, hh + 0.02) * (0.35 + 0.65 * sstep(0.28, 0.55, hh));
     for (let x = 0; x < w; x++) {
       const u = ((x + 0.5) / w) * 2 - 1;
-      const side = Math.max(0, 1 - u * u);
-      const core = Math.exp(-u * u * 9) * 0.7;
-      const a = Math.min(1, fall * (side * 0.55 + core) * 1.25);
+      const stripes = 0.65 + 0.35 * Math.cos(6 * Math.asin(Math.max(-1, Math.min(1, u))));
+      const a = Math.min(1, fall * stripes * sstep(1, 0.86, Math.abs(u)));
       const i = (y * w + x) * 4;
       d[i] = d[i + 1] = d[i + 2] = 255;
       d[i + 3] = Math.round(a * 255);
@@ -20612,12 +20947,21 @@ const RGB = new Map();
  * position (the fast path of the software rasterizer) instead of a filtered, scaled drawImage every frame.
  * Valid only while the zoom stays exactly the same (the camera is settled); a zoom change drops everything.
  * Entries are made lazily with a per-frame budget so a new zoom never causes a long hitch.
+ * While the camera eases (`staleScale` > 0) the copies of the last resting zoom stand in, drawn scaled by
+ * staleScale = k / this.k (peek): filtered while the frame budget allows, else nearest-neighbour — near 1× that
+ * still looks like the filtered copy; sampling the atlas itself nearest-neighbour at 1.3–2.7× looked blocky.
  */
+// zoom ratios (current / last resting) over which the resting copies stand in while the camera eases: the
+// build → battle close-up and the leak pull-back move ~1.3–1.6× (drawn filtered when the frame budget allows,
+// see the renderer's draw(); beyond the range units are drawn straight from the atlas)
+const STALE_MIN = 0.55, STALE_MAX = 1.8;
+
  class Prescaler {
   constructor(cap = 1600) {
     this.cap = cap;
     this.k = -1;
     this.active = false;
+    this.staleScale = 0;
     this.map = new Map();
     this.seen = new Map();      // key → uses before a copy is made (one-off frames never get one)
     this.budget = 0;
@@ -20632,7 +20976,27 @@ const RGB = new Map();
       this.k = k;
     }
     this.active = settled && k === this.k;
+    const r = this.k > 0 ? k / this.k : 0;
+    this.staleScale = !this.active && this.map.size > 0 && r > STALE_MIN && r < STALE_MAX ? r : 0;
     this.budget = this.map.size < 24 ? 10 : 6;
+  }
+
+  cacheKey(key, s, mirror, sv = s, rot = 0) {
+    return key + (mirror ? '|m|' : '|') + Math.round(s * 4096) + (sv !== s ? ':' + Math.round(sv * 4096) : '') + (rot ? '@' + rot.toFixed(3) : '');
+  }
+
+  /** Existing copy made at the last resting zoom (s, sv: the scales it was made with) or null; never creates. */
+  peek(key, s, mirror, sv = s, rot = 0) {
+    return this.map.get(this.cacheKey(key, s, mirror, sv, rot)) || null;
+  }
+
+  /** Clear everything (dispose). */
+  clear() {
+    this.map.clear();
+    this.seen.clear();
+    this.k = -1;
+    this.active = false;
+    this.staleScale = 0;
   }
 
   /**
@@ -20641,7 +21005,7 @@ const RGB = new Map();
    */
   get(key, src, sx, sy, sw, sh, ax, ay, s, mirror, sv = s, rot = 0, minUses = 2) {
     if (!this.active) return null;
-    const k = key + (mirror ? '|m|' : '|') + Math.round(s * 4096) + (sv !== s ? ':' + Math.round(sv * 4096) : '') + (rot ? '@' + rot.toFixed(3) : '');
+    const k = this.cacheKey(key, s, mirror, sv, rot);
     let e = this.map.get(k);
     if (e) return e;
     if (minUses > 1) {
@@ -20782,6 +21146,9 @@ const { P } = __m[32];
 // shapes whose spin reads (leaves, shards, snow, coins, runes); round glows / smoke are drawn unrotated
 const SPIN = [];
 for (const f of [P.LEAF, P.SHARD, P.SNOW, P.COIN, P.RUNE, P.PLUS, P.FLAME]) SPIN[f] = 1;
+// soft light shapes that pile up over the units in a crowded fight (see exposure())
+const SOFT = [];
+for (const f of [P.GLOW, P.CORE, P.BUBBLE]) SOFT[f] = 1;
 
  class ParticlePool2D {
   constructor(capacity, additive) {
@@ -20810,6 +21177,83 @@ for (const f of [P.LEAF, P.SHARD, P.SNOW, P.COIN, P.RUNE, P.PLUS, P.FLAME]) SPIN
 
   load() {
     return this.n / this.cap;
+  }
+
+  /**
+   * Brightness of the soft additive glows (GLOW / CORE / BUBBLE) for the current crowd: 1 in a sparse fight,
+   * down to 0.6 when the pool is full. The 3D billboards are depth-tested, so the bodies in front of a glow (and
+   * the unit it sits on) hide part of it; here every glow lands on top of every body and a dense battle washed out
+   * to white (QA FA-2). Debug: window.__r2dExposure = number overrides it.
+   */
+  exposure() {
+    const o = typeof window !== 'undefined' ? window.__r2dExposure : undefined;
+    if (typeof o === 'number') return o;
+    const e = 1.1 - 0.5 * this.load();
+    return e > 1 ? 1 : e < 0.6 ? 0.6 : e;
+  }
+
+  /**
+   * Depth-sort the soft glows (GLOW / CORE / BUBBLE, not velocity-stretched) of this frame by lane depth (z) so the
+   * renderer can draw them inside its painter-sorted actor pass (drawSoftUpTo before each actor): a glow is then
+   * covered by the unit it sits on and by every unit in front of it, and covers the units behind it — what the
+   * depth-tested 3D billboards do. draw() skips them afterwards. → number of soft glows.
+   */
+  beginSoft() {
+    const idx = this._soft || (this._soft = []);
+    idx.length = 0;
+    this.drawn = 0;
+    if (this.additive) {
+      for (let i = 0; i < this.n; i++) if (SOFT[this.frame[i]] && !(this.str[i] > 0)) idx.push(i);
+      const pz = this.pz;
+      idx.sort((a, b) => pz[a] - pz[b]);
+    }
+    this._softPos = 0;
+    this._softOn = idx.length > 0;
+    this._softExp = this.exposure();
+    return idx.length;
+  }
+
+  /** Draw the sorted soft glows with lane depth ≤ zMax not drawn yet (filtered, additive; restores the state). */
+  drawSoftUpTo(ctx, view, tint, sized, zMax) {
+    const idx = this._soft;
+    let p = this._softPos;
+    if (!this._softOn || p >= idx.length || this.pz[idx[p]] > zMax) return;
+    const sm = ctx.imageSmoothingEnabled;
+    ctx.imageSmoothingEnabled = true;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalCompositeOperation = 'lighter';
+    while (p < idx.length && this.pz[idx[p]] <= zMax) this.drawOne(ctx, view, tint, sized, idx[p++], this._softExp);
+    this._softPos = p;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.imageSmoothingEnabled = sm;
+  }
+
+  /** One round (unstretched) particle i at alpha × mul. */
+  drawOne(ctx, view, tint, sized, i, mul) {
+    const k = view.k;
+    const f = this.age[i] / this.life[i];
+    const j = i * 4;
+    const c0 = this.c0, c1 = this.c1;
+    let a = c0[j + 3] + (c1[j + 3] - c0[j + 3]) * f;
+    const fin = this.fadeIn[i];
+    if (fin > 0 && f < fin) a *= f / fin;
+    a *= mul;
+    if (a < 0.02) return;
+    const size = (this.s0[i] + (this.s1[i] - this.s0[i]) * f) * k;
+    if (size < 1.5) return;
+    const x = this.px[i] * k + view.ox;
+    const y = (this.pz[i] * SIN - this.py[i] * COS) * k + view.oy;
+    const W = view.w * view.res, H = view.h * view.res;
+    if (x < -size * 2 || y < -size * 2 || x > W + size * 2 || y > H + size * 2) return;
+    const r = c0[j] + (c1[j] - c0[j]) * f, g = c0[j + 1] + (c1[j + 1] - c0[j + 1]) * f, b = c0[j + 2] + (c1[j + 2] - c0[j + 2]) * f;
+    const fr = this.frame[i];
+    ctx.globalAlpha = a > 1 ? 1 : a;
+    const img = sized ? sized.get(fr, r, g, b, size) : null;
+    if (img) ctx.drawImage(img, Math.round(x - img.width / 2), Math.round(y - img.height / 2));
+    else ctx.drawImage(tint.get(fr, r, g, b), x - size / 2, y - size / 2, size, size);
+    this.drawn++;
   }
 
   add(x, y, z, vx, vy, vz, life, size, size1, r, g, b, a, r1, g1, b1, a1, frame, grav = 0, drag = 0, rot = 0, rotV = 0, stretch = 0, fadeIn = 0) {
@@ -20879,7 +21323,9 @@ for (const f of [P.LEAF, P.SHARD, P.SNOW, P.COIN, P.RUNE, P.PLUS, P.FLAME]) SPIN
    */
   draw(ctx, view, tint, sized) {
     const n = this.n;
-    this.drawn = 0;
+    const softDone = !!this._softOn;   // drawn in the actor pass (beginSoft / drawSoftUpTo)
+    this._softOn = false;
+    if (!softDone) this.drawn = 0;
     if (!n) return;
     ctx.globalCompositeOperation = this.additive ? 'lighter' : 'source-over';
     const k = view.k, ox = view.ox, oy = view.oy;
@@ -20887,7 +21333,9 @@ for (const f of [P.LEAF, P.SHARD, P.SNOW, P.COIN, P.RUNE, P.PLUS, P.FLAME]) SPIN
     const c0 = this.c0, c1 = this.c1;
     const streaks = this._streaks || (this._streaks = new Map());
     for (const v of streaks.values()) v.n = 0;
+    const soft = this.additive ? this.exposure() : 1;
     for (let i = 0; i < n; i++) {
+      if (softDone && SOFT[this.frame[i]] && !(this.str[i] > 0)) continue;
       const f = this.age[i] / this.life[i];
       const j = i * 4;
       let a = c0[j + 3] + (c1[j + 3] - c0[j + 3]) * f;
@@ -20918,6 +21366,7 @@ for (const f of [P.LEAF, P.SHARD, P.SNOW, P.COIN, P.RUNE, P.PLUS, P.FLAME]) SPIN
         this.drawn++;
         continue;
       }
+      if (SOFT[fr]) a *= soft;
       ctx.globalAlpha = a > 1 ? 1 : a;
       const rot = this.rot[i];
       if (rot !== 0 && SPIN[fr]) {
@@ -20984,6 +21433,23 @@ const { rgb, css, softDisc, pillarSprite, domeSprite, tintCanvas, SizedTints, Si
 
 const rnd = (a, b) => a + Math.random() * (b - a);
 const CAPS = { ring: 48, pillar: 16, ribbon: 40, dome: 8, decal: 24 };
+const TAU = Math.PI * 2;
+// ground ring band: sampled ±RING_HALF widths around the radius (b(1.35) ≈ 0.02: nothing visible beyond)
+const RING_HALF = 1.35;
+const RING_X = Array.from({ length: 13 }, (_, j) => -RING_HALF + (j * 2 * RING_HALF) / 12);
+// inner fill profile of the 3D ring at u = d / r (smoothstep(r, 0, d) · (0.35 + 0.65 · smoothstep(0, r, d)))
+const RING_FILL = [[0, 0.35], [0.2, 0.374], [0.4, 0.375], [0.5, 0.338], [0.6, 0.271], [0.7, 0.186], [0.8, 0.097], [0.9, 0.027], [1, 0]];
+
+/** One band stop at x widths off the ring radius: the 3D additive contribution c·(0.7+0.6b)·b·A as an rgba string. */
+function bandColor(c, x, A) {
+  const b = Math.exp(-2.2 * x * x);
+  const m = (0.7 + 0.6 * b) * b * A;
+  const q0 = c[0] * m, q1 = c[1] * m, q2 = c[2] * m;
+  const hi = Math.max(q0, q1, q2);
+  if (hi < 0.004) return css(c[0], c[1], c[2], 0);   // same hue: no dark fringe whichever space the stops blend in
+  const al = Math.min(1, hi);
+  return css(Math.min(1, q0 / al), Math.min(1, q1 / al), Math.min(1, q2 / al), +al.toFixed(3));
+}
 
  class FxSystem2D {
   constructor(tint, hooks) {
@@ -20991,7 +21457,8 @@ const CAPS = { ring: 48, pillar: 16, ribbon: 40, dome: 8, decal: 24 };
     this.sized = new SizedTints(tint);
     this.copies = new SizedCopies();
     this.grads = new Map();
-    this.ps = null;               // Prescaler (set by the renderer)
+    this.bands = new Map();
+    this.ps = null;              // Prescaler (set by the renderer)
     this.decalId = 0;
     this.pressure = 0;            // 0..1, from the renderer's frame-time EMA
     this.hooks = hooks;             // { shake(a), flash(hex,a), screenFlash(hex,a), zh(), arrow }
@@ -21073,21 +21540,37 @@ const CAPS = { ring: 48, pillar: 16, ribbon: 40, dome: 8, decal: 24 };
     this.norm.clear();
   }
 
-  /** Radial fill gradient for ring discs (unit radius, cached per colour): cheaper than a scaled image. */
+  /** Radial fill gradient for ring discs (unit radius = the ring radius, cached per colour): the inner fill of the
+   *  3D ring (src/render/fxprims.js RING_FRAG: fill · smoothstep(r, 0, d) · (0.35 + 0.65 · smoothstep(0, r, d)) at
+   *  colour 0.7 c) — a flat disc that fades out toward the ring, not a second bright band at its edge. */
   ringGrad(ctx, hex) {
     let g = this.grads.get(hex);
     if (!g) {
       const c = rgb(hex);
-      const col = (a) => `rgba(${Math.round(c[0] * 255)},${Math.round(c[1] * 255)},${Math.round(c[2] * 255)},${a})`;
+      const col = (a) => `rgba(${Math.round(c[0] * 255)},${Math.round(c[1] * 255)},${Math.round(c[2] * 255)},${a.toFixed(3)})`;
       g = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
-      g.addColorStop(0, col(0.35));
-      g.addColorStop(0.55, col(0.55));
-      g.addColorStop(0.86, col(1));
-      g.addColorStop(0.95, col(0.5));
-      g.addColorStop(1, col(0));
+      for (const [u, f] of RING_FILL) g.addColorStop(u, col(0.7 * f));
       this.grads.set(hex, g);
     }
     return g;
+  }
+
+  /**
+   * Colour stops of the 3D ring band (RING_FRAG, additive): c · (0.7 + 0.6 b) · b · A with b = exp(−2.2 x²),
+   * x = (ρ − r) / width, sampled at RING_X. Each stop carries the additive contribution as rgb · α (α = the brightest
+   * channel, capped at 1: a 'lighter' contribution above 1 saturates the pixel either way). Cached per colour and
+   * 1/32 of A for the usual case (evenly spaced stops, ρ − r ∈ ±RING_HALF · width).
+   */
+  bandStops(hex, A) {
+    const aq = Math.max(1, Math.min(32, Math.round(A * 32)));
+    const key = hex + '|' + aq;
+    let s = this.bands.get(key);
+    if (!s) {
+      if (this.bands.size > 1500) this.bands.clear();
+      s = RING_X.map((x) => bandColor(rgb(hex), x, aq / 32));
+      this.bands.set(key, s);
+    }
+    return s;
   }
 
   /** layer: 'ground' (decals, rings) or 'air' (pillars, domes, ribbons). */
@@ -21103,8 +21586,22 @@ const CAPS = { ring: 48, pillar: 16, ribbon: 40, dome: 8, decal: 24 };
     ctx.setLineDash([]);
   }
 
-  drawParticles(ctx, view) {
+  /** Start of the frame's particles: size buckets, and (interleave) the additive pool's soft glows depth-sorted for
+   *  the actor pass (drawSoftUpTo). → number of soft glows to interleave. */
+  beginParticles(interleave) {
     this.sized.begin();
+    this.begun = true;
+    return interleave ? this.add.beginSoft() : 0;
+  }
+
+  /** Soft glows with lane depth ≤ z (call before drawing the actor at z; Infinity after the last one). */
+  drawSoftUpTo(ctx, view, z) {
+    this.add.drawSoftUpTo(ctx, view, this.tint, this.sized, z);
+  }
+
+  drawParticles(ctx, view) {
+    if (!this.begun) this.sized.begin();
+    this.begun = false;
     this.norm.draw(ctx, view, this.tint, this.sized);
     this.add.draw(ctx, view, this.tint, this.sized);
   }
@@ -21156,46 +21653,68 @@ const CAPS = { ring: 48, pillar: 16, ribbon: 40, dome: 8, decal: 24 };
   }
 
   // ───────────────────────────── primitives over time
+  /**
+   * Expanding ground ring, drawn like the 3D one (src/render/fxprims.js RING_FRAG): a soft Gaussian band in the
+   * ring's colour (a radial gradient through bandStops — no whitened core, no hard stroke edges) plus the optional
+   * inner fill, both in ground space (x · k, y · k · sinθ) so the band narrows toward the top and bottom of the
+   * ellipse as the flat 3D ring does.
+   */
   groundRing(x, z, hex, r0, r1, dur, { width = 0.14, fill = 0, alpha = 1, y = 0.04, dash = 0, spin = 0 } = {}) {
-    const c = rgb(hex);
-    const band = css(Math.min(1, c[0] * 1.15 + 0.08), Math.min(1, c[1] * 1.15 + 0.08), Math.min(1, c[2] * 1.15 + 0.08), 1);
-    const core = css(Math.min(1, c[0] * 0.5 + 0.5), Math.min(1, c[1] * 0.5 + 0.5), Math.min(1, c[2] * 0.5 + 0.5), 1);
     const self = this;
+    const hw = RING_HALF * width;
     return this.prim('ring', dur, 'ground', (ctx, v, f) => {
       const e = 1 - Math.pow(1 - f, 2.2);
       const r = r0 + (r1 - r0) * e;
       const a = alpha * (f < 0.12 ? f / 0.12 : 1 - Math.pow((f - 0.12) / 0.88, 1.6));
       if (a <= 0.01 || r <= 0.01) return;
-      const cx = x * v.k + v.ox, cy = (z * SIN - y * COS) * v.k + v.oy;
-      const rx = r * v.k, ry = rx * SIN;
+      const k = v.k;
+      const cx = x * k + v.ox, cy = (z * SIN - y * COS) * k + v.oy;
       ctx.globalCompositeOperation = 'lighter';
       if (fill > 0 && !(self.pressure > 0.5 && r > 2.5)) {
-        ctx.globalAlpha = Math.min(1, a * fill * 0.9);
+        ctx.globalAlpha = Math.min(1, a * fill);
         ctx.fillStyle = self.ringGrad(ctx, hex);
-        ctx.setTransform(rx, 0, 0, ry, cx, cy);
+        ctx.setTransform(r * k, 0, 0, r * k * SIN, cx, cy);
         ctx.beginPath();
-        ctx.arc(0, 0, 1, 0, Math.PI * 2);
+        ctx.arc(0, 0, 1, 0, TAU);
         ctx.fill();
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
       }
-      const lw = Math.max(1, width * v.k * 0.9);
-      if (dash > 0) {
-        const circ = Math.PI * (rx + ry);
-        const seg = circ / dash;
-        ctx.setLineDash([seg * 0.55, seg * 0.45]);
-        ctx.lineDashOffset = -self.time * spin * seg;
+      // the band, in ground units around the centre
+      ctx.setTransform(k, 0, 0, k * SIN, cx, cy);
+      ctx.globalAlpha = 1;
+      const ri = r - hw, ro = r + hw;
+      let g;
+      if (ri > 0) {
+        g = ctx.createRadialGradient(0, 0, ri, 0, 0, ro);
+        const s = self.bandStops(hex, a);
+        for (let j = 0; j < s.length; j++) g.addColorStop(j / (s.length - 1), s[j]);
+      } else {
+        // still small: the gradient starts at the centre (stops placed by radius)
+        g = ctx.createRadialGradient(0, 0, 0, 0, 0, ro);
+        const c = rgb(hex);
+        g.addColorStop(0, bandColor(c, -r / width, a));
+        for (const xs of RING_X) {
+          const t = (r + xs * width) / ro;
+          if (t > 0.001) g.addColorStop(Math.min(1, t), bandColor(c, xs, a));
+        }
       }
       ctx.beginPath();
-      ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
-      ctx.strokeStyle = band;
-      ctx.globalAlpha = a * 0.55;
-      ctx.lineWidth = lw * 1.5;
-      ctx.stroke();
-      ctx.strokeStyle = core;
-      ctx.globalAlpha = a * 0.85;
-      ctx.lineWidth = Math.max(1, lw * 0.5);
-      ctx.stroke();
-      if (dash > 0) ctx.setLineDash([]);
+      if (dash > 0 || ri > 0) {
+        if (dash > 0) {
+          const seg = (TAU * r) / dash;
+          ctx.setLineDash([seg * 0.55, seg * 0.45]);
+          ctx.lineDashOffset = -self.time * spin * seg;
+        }
+        ctx.arc(0, 0, r, 0, TAU);
+        ctx.strokeStyle = g;
+        ctx.lineWidth = 2 * hw;
+        ctx.stroke();
+        if (dash > 0) ctx.setLineDash([]);
+      } else {
+        ctx.arc(0, 0, ro, 0, TAU);
+        ctx.fillStyle = g;
+        ctx.fill();
+      }
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
     });
   }
 
@@ -21210,9 +21729,12 @@ const CAPS = { ring: 48, pillar: 16, ribbon: 40, dome: 8, decal: 24 };
       const cx = x * v.k + v.ox, cy = (z * SIN - y * COS) * v.k + v.oy;
       ctx.globalCompositeOperation = 'lighter';
       ctx.globalAlpha = Math.min(1, a);
+      // twice: the front and the back face of the 3D cylinder both add (see pillarSprite)
       const cc = this.copies.get(img, w, h);
-      if (cc) ctx.drawImage(cc, Math.round(cx - cc.width / 2), Math.round(cy - cc.height));
-      else ctx.drawImage(img, cx - w / 2, cy - h, w, h);
+      for (let pass = 0; pass < 2; pass++) {
+        if (cc) ctx.drawImage(cc, Math.round(cx - cc.width / 2), Math.round(cy - cc.height));
+        else ctx.drawImage(img, cx - w / 2, cy - h, w, h);
+      }
     });
   }
 
@@ -21863,6 +22385,9 @@ const SHIELD = 'rgb(245,247,255)';
 
   drawMarks(ctx, view) {
     const k = view.k, ox = view.ox, oy = view.oy;
+    // camera easing: the copies of the last resting zoom stand in (Prescaler.staleScale; nearest-neighbour ≈ 1×)
+    const ps = this.ps;
+    const stale = ps && !ps.active ? ps.staleScale : 0;
     const pass = (list, n, add) => {
       if (!n) return;
       ctx.globalCompositeOperation = add ? 'lighter' : 'source-over';
@@ -21893,6 +22418,25 @@ const SHIELD = 'rgb(245,247,255)';
           if (e) {
             ctx.setTransform(1, 0, 0, 1, 0, 0);
             ctx.drawImage(e.c, Math.round(cx) - e.ox, Math.round(cy) - e.oy);
+            continue;
+          }
+        }
+        if (stale > 0) {
+          const R0 = (m.r * 2 * ps.k) / img.width;
+          const Rq0 = Math.round(R0 * 64) / 64;
+          const col = m.frame + ':' + Math.round(m.cr * 31) + ',' + Math.round(m.cg * 31) + ',' + Math.round(m.cb * 31);
+          let e;
+          if (!m.rot) e = ps.peek('mk' + col, Rq0, false, Rq0 * SIN);
+          else {
+            const step = Math.PI / 24;
+            let q = Math.round(m.rot / step) % 24;
+            if (q < 0) q += 24;
+            e = ps.peek('mr' + col, Rq0, false, Rq0 * SIN, q * step || 1e-6);
+          }
+          if (e && Rq0 > 0) {
+            const f = R / Rq0;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.drawImage(e.c, cx - e.ox * f, cy - e.oy * f, e.c.width * f, e.c.height * f);
             continue;
           }
         }
@@ -21994,11 +22538,12 @@ const SHIELD = 'rgb(245,247,255)';
 })();
 // ── src/render2d/env.js
 __m[55] = await (async () => {
-// Battlefield for the 2D renderer: the baked static backdrop + the static rift layers composited into one
-// pre-scaled cache while the framing is stable (one 1:1 blit per frame; nearest-neighbour scaling only while the
-// camera zooms), animated rift overlays (swirl cross-fade, pulses, rim over the creeps, crackle, motes), leak
-// lines that flash red, the build grid, race banners on the dais (they drop when the king falls), the dais
-// columns and mines as depth-sorted occluders, torch flames, the smouldering throne and drifting pollen.
+// Battlefield for the 2D renderer: the baked static backdrop + the static rift glows (spill, back) composited
+// into one pre-scaled cache while the framing is stable (one 1:1 blit per frame; nearest-neighbour scaling only
+// while the camera zooms), the animated rift (glow pulses, then the storm: a cross-fade of its two baked moments,
+// then the rim over the creeps, crackle, motes), leak lines that flash red, the build grid, race banners on the
+// dais (they drop when the king falls), the dais columns and mines as depth-sorted occluders, torch flames, the
+// smouldering throne and drifting pollen.
 const { LANE_W, LEAK_Y, KING_X, KING_Y, BUILD_Y0, BUILD_ROWS } = __m[0];
 const { P, makeCanvas, paintGrid } = __m[32];
 const { laneX, RIFT_Y, LANE_STRIDE } = __m[29];
@@ -22006,6 +22551,11 @@ const { SIN, COS } = __m[49];
 
 const LANES = [0, 1];
 const RIFT_X = 4.5;
+// rift ground spill: the uAlpha it was baked at (tools/bake/sprites.js, src/render/env.js) and the 3D mean
+const SPILL_BAKED = 0.42;
+const SPILL_BASE = 0.34;
+// storm cross-fade steps (one re-composite of the storm rect per step; a step moves ≤ 1/8 of the colour change)
+const STORM_LEVELS = 8;
 
  class Env2D {
   constructor(sprites, tint, prescaler) {
@@ -22040,6 +22590,7 @@ const RIFT_X = 4.5;
     const pr = (n) => (sprites ? sprites.prop(n) : null);
     this.rift = { back: pr('rift_back'), swirl: pr('rift_swirl'), swirl2: pr('rift_swirl2'), rim: pr('rift_rim'), spill: pr('rift_spill') };
     this.hasRift = !!(this.rift.swirl || this.rift.back);
+    this.storm = [null, null];   // per lane: the storm cross-faded at the current zoom { c, s, q, ox, oy }
     // depth-sorted scenery: race banners, dais columns (with torches), mines
     this.drawables = [];
     const banners = places.banners || [{ x: KING_X - 2.75, y: KING_Y + 0.6 }, { x: KING_X + 2.75, y: KING_Y + 0.6 }];
@@ -22140,35 +22691,98 @@ const RIFT_X = 4.5;
   }
 
   // ───────────────────────────── drawing
-  /** Draw a prop rect anchored at device (px, py) scaled by s; pre-scaled copy when the camera is settled. */
+  /** Draw a prop rect anchored at device (px, py) scaled by s (= k / pr.ppu); pre-scaled copy when the camera is
+   *  settled, the copy of the last resting zoom while it eases (Prescaler.staleScale). */
   blitProp(ctx, key, pr, px, py, s, mirror = false) {
-    const e = this.ps ? this.ps.get(key, pr.img, pr.x, pr.y, pr.w, pr.h, pr.ax, pr.ay, s, mirror) : null;
+    const ps = this.ps;
+    const e = ps ? ps.get(key, pr.img, pr.x, pr.y, pr.w, pr.h, pr.ax, pr.ay, s, mirror) : null;
     if (e) { ctx.drawImage(e.c, Math.round(px) - e.ox, Math.round(py) - e.oy); return; }
+    const r = ps && !ps.active ? ps.staleScale : 0;
+    if (r > 0) {
+      const old = ps.peek(key, ps.k / pr.ppu, mirror);
+      if (old) { ctx.drawImage(old.c, px - old.ox * r, py - old.oy * r, old.c.width * r, old.c.height * r); return; }
+    }
     ctx.setTransform(mirror ? -s : s, 0, 0, s, px, py);
     ctx.drawImage(pr.img, pr.x, pr.y, pr.w, pr.h, -pr.ax, -pr.ay, pr.w, pr.h);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 
-  /** Static rift layers (spill + back glow + storm) of every lane, as composited into the backdrop. */
+  /** Static rift glows (ground spill, then the glow behind the arch) of every lane, composited into the backdrop.
+   *  The storm is not static: drawStorm() puts it over them (and over their pulses) every frame. */
   staticRift(g, k, ox, oy) {
     const R = this.rift;
     for (const l of LANES) {
       const cx = (laneX(l) + RIFT_X) * k + ox, gy = RIFT_Y * SIN * k + oy;
       g.globalCompositeOperation = 'lighter';
-      g.globalAlpha = 1;
       for (const pr of [R.spill, R.back]) {
         if (!pr) continue;
+        // the spill was baked at the material's initial uAlpha 0.42; the 3D game runs it at 0.34 ± 0.08 + pulses
+        g.globalAlpha = pr === R.spill ? SPILL_BASE / SPILL_BAKED : 1;
         const s = k / pr.ppu;
-        g.drawImage(pr.img, pr.x, pr.y, pr.w, pr.h, cx - pr.ax * s, gy - pr.ay * s, pr.w * s, pr.h * s);
-      }
-      g.globalCompositeOperation = 'source-over';
-      if (R.swirl) {
-        const pr = R.swirl, s = k / pr.ppu;
         g.drawImage(pr.img, pr.x, pr.y, pr.w, pr.h, cx - pr.ax * s, gy - pr.ay * s, pr.w * s, pr.h * s);
       }
     }
     g.globalAlpha = 1;
     g.globalCompositeOperation = 'source-over';
+  }
+
+  /**
+   * The rift storm of lane l anchored at device (cx, gy): rift_swirl and rift_swirl2 are two moments of the same
+   * storm with identical alpha, so the drift is a true cross-fade — both moments pre-scaled to this zoom (Prescaler,
+   * 1:1) and lerped (premultiplied) into a per-lane canvas, re-composited only when the blend steps; one 1:1 blit
+   * per frame. (Drawing swirl2 over a swirl that is already on the canvas compounded the alpha: the ground behind
+   * the translucent storm faded in and out.) While the camera moves: the last blend, scaled.
+   */
+  drawStorm(ctx, view, l, cx, gy) {
+    const R = this.rift, s1 = R.swirl, s2 = R.swirl2;
+    if (!s1) return;
+    const s = view.k / s1.ppu;
+    const a = s2 ? 0.5 + 0.5 * Math.sin(this.time * 0.9 + l * 1.7) : 0;
+    const q = Math.round(a * STORM_LEVELS);
+    let st = this.storm[l];
+    if (s2 && this.ps && this.ps.active) {
+      const fresh = st && st.s === s && st.q === q ? st : this.blendStorm(l, q, s);
+      if (fresh) st = fresh;
+      if (st && st.s === s) {
+        ctx.drawImage(st.c, Math.round(cx) - st.ox, Math.round(gy) - st.oy);
+        return;
+      }
+    }
+    if (st && st.s > 0) {
+      // the blend made at an earlier zoom, scaled (NN while the camera moves, like the other layers)
+      const r = s / st.s;
+      ctx.drawImage(st.c, cx - st.ox * r, gy - st.oy * r, st.c.width * r, st.c.height * r);
+      return;
+    }
+    const pr = s2 && a > 0.5 ? s2 : s1;
+    this.blitProp(ctx, pr === s1 ? 'rift_swirl' : 'rift_swirl2', pr, cx, gy, s);
+  }
+
+  /** (Re)composite lane l's storm at blend step q for scale s → the storm entry, or null (copies not ready). */
+  blendStorm(l, q, s) {
+    const R = this.rift, s1 = R.swirl, s2 = R.swirl2;
+    const e1 = this.ps.get('rift_swirl', s1.img, s1.x, s1.y, s1.w, s1.h, s1.ax, s1.ay, s, false, s, 0, 1);
+    const e2 = e1 && this.ps.get('rift_swirl2', s2.img, s2.x, s2.y, s2.w, s2.h, s2.ax, s2.ay, s, false, s, 0, 1);
+    if (!e1 || !e2 || e1.c.width !== e2.c.width || e1.c.height !== e2.c.height) return null;
+    let st = this.storm[l];
+    if (!st || st.c.width !== e1.c.width || st.c.height !== e1.c.height) {
+      st = this.storm[l] = { c: makeCanvas(e1.c.width, e1.c.height), s: 0, q: -1, ox: 0, oy: 0 };
+    }
+    const g = st.c.getContext('2d');
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.clearRect(0, 0, st.c.width, st.c.height);
+    const f = q / STORM_LEVELS;
+    g.globalCompositeOperation = 'source-over';
+    g.globalAlpha = 1 - f;
+    if (f < 1) g.drawImage(e1.c, 0, 0);
+    // premultiplied lerp: (1 − f)·S1 + f·S2 keeps the shared alpha
+    g.globalCompositeOperation = 'lighter';
+    g.globalAlpha = f;
+    if (f > 0) g.drawImage(e2.c, 0, 0);
+    g.globalCompositeOperation = 'source-over';
+    g.globalAlpha = 1;
+    st.s = s; st.q = q; st.ox = e1.ox; st.oy = e1.oy;
+    return st;
   }
 
   /** Opaque battlefield (backdrop + static rift). Returns 'cache' | 'rebuild' | 'direct'. */
@@ -22255,22 +22869,19 @@ const RIFT_X = 4.5;
       const gy = RIFT_Y * SIN * k + oy;
       const pulse = 0.15 * Math.sin(t * 2.1) + p.pulse * 0.6;
       if (this.hasRift) {
-        // the storm drifts: cross-fade to its second moment
-        if (R.swirl2) {
-          const a = 0.5 + 0.5 * Math.sin(t * 0.9 + l * 1.7);
-          if (a > 0.03) {
-            ctx.globalAlpha = a;
-            this.blitProp(ctx, 'rift_swirl2', R.swirl2, cx, gy, k / R.swirl2.ppu);
-          }
-        }
-        // light pulses (spawns, battle start) brighten the glow layers
+        // light pulses (spawns, battle start) brighten the glow layers — under the storm, in the static order
+        // spill (ground) → back glow → storm
         ctx.globalCompositeOperation = 'lighter';
+        // spill: the static layer holds the 3D base (0.34); this adds its swing above it and the spawn pulses
+        // (3D: uAlpha 0.34 + 0.08 sin(2.1 t) + 0.3 pulse, src/render/env.js update), in units of the baked 0.42
+        const sa = Math.min(1, (0.08 * Math.sin(t * 2.1) + p.pulse * 0.3) / SPILL_BAKED);
+        if (sa > 0.03 && R.spill) { ctx.globalAlpha = sa; this.blitProp(ctx, 'rift_spill', R.spill, cx, gy, k / R.spill.ppu); }
         const pa = Math.min(1, 0.08 + pulse);
         if (pa > 0.03 && R.back) { ctx.globalAlpha = pa; this.blitProp(ctx, 'rift_back', R.back, cx, gy, k / R.back.ppu); }
-        const sa = Math.min(1, 0.04 + 0.08 * Math.sin(t * 2.1) + p.pulse * 0.5);
-        if (sa > 0.03 && R.spill) { ctx.globalAlpha = sa; this.blitProp(ctx, 'rift_spill', R.spill, cx, gy, k / R.spill.ppu); }
         ctx.globalCompositeOperation = 'source-over';
         ctx.globalAlpha = 1;
+        // the storm drifts: a cross-fade between its two baked moments
+        this.drawStorm(ctx, view, l, cx, gy);
       } else {
         const glowImg = fxTint.get(P.GLOW, 0.5, 0.26, 0.9);
         ctx.globalCompositeOperation = 'lighter';
@@ -22552,7 +23163,9 @@ function paintAxe() {
       this.list[w++] = p;
       if (p.kind === 'rock' || p.kind === 'bomb' || p.kind === 'axe') p.spin += dt * 14;
       else if (p.kind === 'goblin') p.spin += dt * 9;
-      if (MAGIC[p.kind]) {
+      // the orb is a fresh short-lived glow pair per update; particles do not age while paused (fx.update(0)), so
+      // emitting at dt = 0 piled additive pairs on one spot into a white disc — the last pair stays instead
+      if (MAGIC[p.kind] && dt > 0) {
         const c = rgb(p.vis.glow || p.vis.color || '#ffffff');
         const sz = p.big ? 0.55 : 0.38;
         this.fx.add.add(p.x, p.y, p.z, 0, 0, 0, Math.max(0.02, dt * 1.5), sz, sz, c[0], c[1], c[2], 1, c[0], c[1], c[2], 1, P.GLOW);
@@ -22664,7 +23277,12 @@ const { P } = __m[32];
  const CHAR_SCALE = 1.45;
  const KING_SCALE = 1.08;
 
-const FLASH = { hit: ['#ffffff', 0.4], heal: ['#7dff9a', 0.55], king: ['#ff4a3a', 0.65], gold: ['#ffd76a', 0.6], dark: ['#b07cff', 0.6] };
+// Hit flash colours, drawn as a 'screen' blend of the frame's silhouette (out = c + S·(1 − c) per channel). The 3D
+// flash (src/render/materials.js FLASH) adds a linear-light emissive before the sRGB encode: a strong lift on dark
+// tones, a faint one on highlights. These colours are a per-channel least-squares fit of that curve on ~99k opaque
+// pixels of 8 baked keys (mean abs error ≈ 0.013; the old additive white at 0.4 was ≈ 0.2 off and turned units
+// near-white).
+const FLASH = { hit: '#4b4c43', heal: '#3ea751', king: '#cb462f', gold: '#cba738', dark: '#843db5' };
 const LOOK_ALPHA = { ghost: 0.62, pghost_ok: 0.55, pghost_bad: 0.5 };
 const HALO = { gold: ['#ffc94a', 0.55], royal: ['#ffe2a0', 0.28], blood: ['#ff3a2a', 0.5], ghost: ['#7fffd4', 0.45], pghost_ok: ['#9dffb8', 0.4], pghost_bad: ['#ff4a3a', 0.5] };
 // body warmth of the rim-lit 3D looks (materials.js gold rim 0.75 / royal 0.6): soft-light colour, amount, glow
@@ -22760,7 +23378,7 @@ const _f = { fr: null, mirror: false };
     if (role === this.base && !instant) return;
     this.base = role;
     if (role === 'dead') return;
-    const r = role === 'idle2' ? 'idle' : role === 'walk' ? 'move' : role;
+    const r = role === 'idle2' ? 'idle' : role;
     const c = this.clipFor(r);
     if (!c) return;
     if (c !== this.baseClip) this.baseT = 0;
@@ -22843,7 +23461,8 @@ const _f = { fr: null, mirror: false };
     if (snap) { this.x = x; this.z = z; }
   }
 
-  update(dt, rdt) {
+  /** dt: game time, rdt: real time (0 while paused), wall: real time also while paused (default rdt). */
+  update(dt, rdt, wall = rdt) {
     this.time += dt;
     const k = damp(dt, this.tau);
     this.x += (this.tx - this.x) * k;
@@ -22851,7 +23470,8 @@ const _f = { fr: null, mirror: false };
     if (this.state === 'alive' || this.state === 'dying') this.yaw = angleLerp(this.yaw, this.tyaw, damp(dt, 0.09));
     if (this.hop > 0) this.hop = Math.max(0, this.hop - rdt);
     if (this.scalePop > 0) this.scalePop = Math.max(0, this.scalePop - rdt);
-    if (this.flashT > 0) this.flashT -= rdt;
+    // the flash runs out on the wall clock: a unit hit just before a pause must not stay lit for the whole pause
+    if (this.flashT > 0) this.flashT -= wall;
     if (this.knockT > 0) this.knockT = Math.max(0, this.knockT - dt);
     this.baseT += dt * this.baseRate;
     if (this.oneShot) {
@@ -22905,7 +23525,8 @@ const _f = { fr: null, mirror: false };
     else { clip = this.baseClip; t = this.baseT; }
     if (!clip) return null;
     this.sector = sectorOf(this.yaw, this.sector);
-    return sp.frame(clip, t, this.sector, _f);
+    // base clips always loop (a base role that fell back to a one-shot clip would freeze on its last frame)
+    return sp.frame(clip, t, this.sector, _f, clip === this.baseClip && this.state === 'alive' && !this.oneShot ? true : clip.loop);
   }
 
   /** Draw at the current display position. Returns 1 when something was drawn. */
@@ -22937,8 +23558,12 @@ const _f = { fr: null, mirror: false };
     const vars = this.sys.variants;
     const ps = this.sys.prescaler;
     // pre-scaled copies (made only for frames that keep coming back, see Prescaler.get) — a dying / vanishing /
-    // popping unit draws scaled straight from the atlas
-    const cacheable = ps && ps.active && pop === 1 && this.scaleMul === 1 && this.state === 'alive';
+    // popping unit draws scaled straight from the atlas. While the camera eases, the copies of the last resting
+    // zoom (scale s0) stand in, drawn scaled by r = staleScale (nearest-neighbour near 1×, see Prescaler).
+    const still = ps && pop === 1 && this.scaleMul === 1 && this.state === 'alive';
+    const cacheable = still && ps.active;
+    const r = still && !cacheable ? ps.staleScale : 0;
+    const s0 = r > 0 ? (ps.k * this.drawScale * this.scaleMul * pop) / this.entry.ppu : 0;
     // halo behind the body (legendary gold, royal, blood, ghost looks): an enlarged silhouette, additive
     const halo = HALO[this.variant];
     if (halo && this.state === 'alive') {
@@ -22948,8 +23573,10 @@ const _f = { fr: null, mirror: false };
       if (sil) {
         ctx.globalCompositeOperation = 'lighter';
         ctx.globalAlpha = Math.min(1, halo[1] * alpha * pulse);
-        const e = cacheable ? ps.get('h' + fr.id + halo[0], sil, 0, 0, fr.w, fr.h, fr.ax, fr.ay, s * k, f.mirror) : null;
-        if (e) ctx.drawImage(e.c, px - e.ox, py + Math.round(s * 1.5) - e.oy);
+        const e = cacheable ? ps.get('h' + fr.id + halo[0], sil, 0, 0, fr.w, fr.h, fr.ax, fr.ay, s * k, f.mirror)
+          : r > 0 ? ps.peek('h' + fr.id + halo[0], s0 * k, f.mirror) : null;
+        if (e && cacheable) ctx.drawImage(e.c, px - e.ox, py + Math.round(s * 1.5) - e.oy);
+        else if (e) ctx.drawImage(e.c, px - e.ox * r, py + s * 1.5 - e.oy * r, e.c.width * r, e.c.height * r);
         else {
           ctx.setTransform(sx * k, 0, 0, s * k, px, py + s * 1.5);
           ctx.drawImage(sil, -fr.ax, -fr.ay);
@@ -22958,14 +23585,16 @@ const _f = { fr: null, mirror: false };
         ctx.globalCompositeOperation = 'source-over';
       }
     }
-    // shield: a translucent bubble around the unit (the 3D sphere sits half behind, half in front of the model)
+    // shield: a translucent bubble around the unit (the 3D sphere sits half behind, half in front of the model).
+    // 0.38 keeps the 2D : 3D ratio after the 3D bubble went 0.55 → 0.42 (src/render/actors.js, QA FA-5): both
+    // renderers now show it at every game speed, and late elf fights shield most of the line at once
     if (this.shield > 0 && this.maxHp > 0 && this.state === 'alive') {
       const sz = Math.round((this.height * 0.62 + 0.1) * 2 * view.k);
       const sized = this.sys.fx.sized;
       const b = sized.get(P.BUBBLE, 0.75, 0.88, 1, sz);
       const cyb = Math.round(py - this.height * 0.5 * COS * view.k);
       ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = 0.5 * alpha;
+      ctx.globalAlpha = 0.38 * alpha;
       if (b) ctx.drawImage(b, px - (b.width >> 1), cyb - (b.height >> 1));
       else ctx.drawImage(this.sys.fx.tint.get(P.BUBBLE, 0.75, 0.88, 1), px - sz / 2, cyb - sz / 2, sz, sz);
       ctx.globalCompositeOperation = 'source-over';
@@ -22986,10 +23615,14 @@ const _f = { fr: null, mirror: false };
       if (wc) { img = wc; ix = 0; iy = 0; key = 'w' + this.variant; }
     }
     ctx.globalAlpha = Math.min(1, alpha);
-    const e = cacheable ? ps.get(key + fr.id, img, ix, iy, fr.w, fr.h, fr.ax, fr.ay, s, f.mirror) : null;
-    if (e) {
+    const e = cacheable ? ps.get(key + fr.id, img, ix, iy, fr.w, fr.h, fr.ax, fr.ay, s, f.mirror)
+      : r > 0 ? ps.peek(key + fr.id, s0, f.mirror) : null;
+    if (e && cacheable) {
       ctx.drawImage(e.c, px - e.ox, py - e.oy);
       this.sys.drawStats.cached++;
+    } else if (e) {
+      ctx.drawImage(e.c, px - e.ox * r, py - e.oy * r, e.c.width * r, e.c.height * r);
+      this.sys.drawStats.stale++;
     } else {
       this.sys.drawStats.direct++;
       ctx.setTransform(sx, 0, 0, s, px, py);
@@ -22997,11 +23630,10 @@ const _f = { fr: null, mirror: false };
       ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
     // hit flash
-    const flashSil = this.flashT > 0 && this.state === 'alive' ? vars.silhouette(fr, (FLASH[this.flashKind] || FLASH.hit)[0]) : null;
+    const flashSil = this.flashT > 0 && this.state === 'alive' ? vars.silhouette(fr, FLASH[this.flashKind] || FLASH.hit) : null;
     if (flashSil) {
-      const fl = FLASH[this.flashKind] || FLASH.hit;
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = Math.min(1, fl[1] * alpha);
+      ctx.globalCompositeOperation = 'screen';
+      ctx.globalAlpha = Math.min(1, alpha);
       ctx.setTransform(sx, 0, 0, s, px, py);
       ctx.drawImage(flashSil, -fr.ax, -fr.ay);
       ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -23029,6 +23661,7 @@ const { I, P } = __m[32];
 const { handleEvent } = __m[44];
 const { Actor2D } = __m[57];
 const { SIN } = __m[49];
+const { sectorOf, COVER_ERR } = __m[50];
 
  const DAIS_H = 0.3;
 
@@ -23077,7 +23710,7 @@ function variantOf(vis) {
     this.pendingBoardFx = [];
     this.all = [];
     this.drawList = [];
-    this.drawStats = { cached: 0, direct: 0 };
+    this.drawStats = { cached: 0, stale: 0, direct: 0 };
     this.match = null;
     this.local = 0;
     this.mirror = false;
@@ -23381,9 +24014,16 @@ function variantOf(vis) {
       a.idleHold = 0;
       const spd = (e.st && e.st.speed ? e.st.speed : 1) * (e.m && e.m.spd ? e.m.spd : 1) * (a.emerging > 0 ? 1.6 : 1);
       a.moveSpeed = spd;
-      a.setBase('move');
-      const ref = a.meta.moveRefSpeed || 1.7;
-      if (a.base === 'move') a.baseRate = clamp(spd / (ref * a.scale), 0.4, 2.6);
+      // as src/render/actors.js: below 1.1 cells/s the WALK clip (every creep and merc until the 45 s rush),
+      // time-scaled by walkRefSpeed. It is baked E / SE / S (W / SW mirrored) for the keys that march; a facing it
+      // does not cover within 45° (north) keeps the run clip.
+      a.sector = sectorOf(a.yaw, a.sector);
+      const wc = spd < 1.1 && a.entry ? a.entry.clips.walk : null;
+      const walk = !!wc && wc.table[a.sector].err <= COVER_ERR;
+      a.setBase(walk ? 'walk' : 'move');
+      const wm = (walk && a.entry.meta) || a.meta;
+      const ref = walk ? wm.walkRefSpeed || 0.6 : a.meta.moveRefSpeed || 1.7;
+      if (a.base === 'move' || a.base === 'walk') a.baseRate = clamp(spd / (ref * a.scale), 0.4, 2.6);
     } else {
       a.idleHold += dt;
       if (a.idleHold > 0.18 || a.base === 'idle') a.setBase(a.stunned ? 'idle' : 'idle2');
@@ -23555,7 +24195,8 @@ function variantOf(vis) {
   }
 
   // ───────────────────────────── per-frame
-  update(dt, rdt, view) {
+  /** dt: game time; rdt: real time (0 while paused); wall: real time also while paused (hit flashes run out). */
+  update(dt, rdt, view, wall = rdt) {
     this.time += dt;
     const fx = this.fx;
     const list = this.all;
@@ -23569,7 +24210,7 @@ function variantOf(vis) {
       const su = a.x, sv = a.z * SIN;
       const m = Math.max(1.2, a.top * 1.2);
       a.onScreen = su > vr.u0 - m && su < vr.u1 + m && sv > vr.v0 - 0.3 && sv < vr.v1 + m * 1.2;
-      a.update(dt, rdt);
+      a.update(dt, rdt, wall);
     }
     this.updateVanishing(dt);
     if (dt > 0) {
@@ -23965,6 +24606,11 @@ const { ActorSystem2D } = __m[58];
 const { Overlays2D } = __m[59];
 
 const ASSETS_MSG = '战场图像加载失败 / Failed to load the battlefield sprites';
+// frame interval (EMA, s) from which a moving camera draws sprites nearest-neighbour instead of filtered
+const NN_FRAME = 0.028;
+// quality 'low': backing-store pixel budget and the smallest resolution factor (CSS px → canvas px)
+const LOW_PX = 0.7e6;
+const LOW_RES_MIN = 0.5;
 
  async function createRenderer2D(parent, opts = {}) {
   if (!parent) throw new Error('createRenderer2D: parent element required');
@@ -24052,7 +24698,10 @@ const ASSETS_MSG = '战场图像加载失败 / Failed to load the battlefield sp
     w = Math.max(1, Math.round(rect.width || parent.clientWidth || window.innerWidth));
     h = Math.max(1, Math.round(rect.height || parent.clientHeight || window.innerHeight));
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    res = dpr * (quality === 'low' ? 0.75 : 1);
+    // 'low': 0.75 of the device resolution, and at most LOW_PX backing pixels — the frame cost of a software canvas
+    // follows its pixel count (1600×900 low ≈ 0.7 MP ≈ 40 fps; a 1920×1080 window at 0.75 was 1 MP ≈ 28 fps)
+    const lo = dpr * 0.75;
+    res = quality === 'low' ? Math.max(Math.min(LOW_RES_MIN, lo), Math.min(lo, Math.sqrt(LOW_PX / (w * h)))) : dpr;
     const cw = Math.max(1, Math.round(w * res)), ch = Math.max(1, Math.round(h * res));
     if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }
     view.resize(w, h, res);
@@ -24126,25 +24775,37 @@ const ASSETS_MSG = '战场图像加载失败 / Failed to load the battlefield sp
     resetBudget(view.isSettled ? 7 : 3, view.isSettled ? 3 : 1.5);
     if (on('backdrop')) stats.backdrop = env.drawBackdrop(ctx, view, view.isSettled);
     else { ctx.fillStyle = '#333'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
-    // while the camera moves nothing is pre-scaled: unit sprites, marks and props are then drawn with
-    // nearest-neighbour scaling (a filtered scaled draw costs ~2× more on a software canvas); FX stay filtered
+    // while the camera moves nothing is pre-scaled: unit sprites, marks and props are then drawn scaled (the
+    // copies of the last resting zoom, else the atlas) — filtered while frames are cheap, nearest-neighbour when
+    // they are not (a filtered scaled draw costs ~2× more on a software canvas); FX stay filtered
     const moving = !view.isSettled;
-    if (moving) ctx.imageSmoothingEnabled = false;
+    const nn = moving && frameEma >= NN_FRAME;
+    if (nn) ctx.imageSmoothingEnabled = false;
     bars.moving = moving;
     if (on('under')) env.drawUnder(ctx, view, tint);
     if (on('marks')) bars.drawMarks(ctx, view);
-    if (moving) ctx.imageSmoothingEnabled = true;
+    if (nn) ctx.imageSmoothingEnabled = true;
     if (on('ground')) fx.draw(ctx, view, 'ground');
     if (st && on('ground')) overlays.drawGround(ctx, view, st);
     const list = sys.collect(drawExtras);
     let n = 0;
-    if (moving) ctx.imageSmoothingEnabled = false;
-    if (on('actors')) for (const d of list) n += d.draw(ctx, view, 1) || 0;
+    // soft additive glows go into the painter-sorted pass (each one just before the first actor in front of it):
+    // the 2D stand-in for the depth test of the 3D billboards — a glow no longer veils its own unit or the ones
+    // in front (a crowded fight washed out to white, QA FA-2)
+    const soft = fx.beginParticles(on('particles') && on('actors'));
+    if (nn) ctx.imageSmoothingEnabled = false;
+    if (on('actors')) {
+      for (const d of list) {
+        if (soft) fx.drawSoftUpTo(ctx, view, d.z);
+        n += d.draw(ctx, view, 1) || 0;
+      }
+      if (soft) fx.drawSoftUpTo(ctx, view, Infinity);
+    }
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = 'source-over';
     if (on('under')) env.drawOver(ctx, view);
-    if (moving) ctx.imageSmoothingEnabled = true;
+    if (nn) ctx.imageSmoothingEnabled = true;
     if (on('proj')) n += proj.draw(ctx, view, shadowImg);
     if (on('air')) fx.draw(ctx, view, 'air');
     if (on('particles')) fx.drawParticles(ctx, view);
@@ -24230,7 +24891,7 @@ const ASSETS_MSG = '战场图像加载失败 / Failed to load the battlefield sp
         } else view.setFrameMode(want, deepest + 1.7, topH);
       }
       view.update(dt);
-      sys.update(adt, paused ? 0 : dt, view);
+      sys.update(adt, paused ? 0 : dt, view, dt);
       if (lap) lap('actors');
       proj.update(adt);
       fx.update(fxDt);
@@ -24263,7 +24924,7 @@ const ASSETS_MSG = '战场图像加载失败 / Failed to load the battlefield sp
         const settled = stats.frames ? +(stats.settled / stats.frames).toFixed(2) : 0;
         stats.frames = 0; stats.acc = 0; stats.cpu = 0; stats.settled = 0;
         const ds = sys.drawStats;
-        ds.share = ds.cached + ds.direct ? +(ds.cached / (ds.cached + ds.direct)).toFixed(2) : 0;
+        ds.share = ds.cached + ds.stale + ds.direct ? +(ds.cached / (ds.cached + ds.stale + ds.direct)).toFixed(2) : 0;
         const particles = fx.add.n + fx.norm.n;
         window.__renderStats = {
           renderer: '2d', fps, cpuMsPerFrame: ms, drawCalls: stats.sprites + fx.add.drawn + fx.norm.drawn, sprites: stats.sprites,
@@ -24274,7 +24935,7 @@ const ASSETS_MSG = '战场图像加载失败 / Failed to load the battlefield sp
           timeScale: +rate.toFixed(2), framesRendered: stats.total,
           missingSprites: sprites ? sprites.missing.length : -1,
         };
-        sys.drawStats = { cached: 0, direct: 0 };
+        sys.drawStats = { cached: 0, stale: 0, direct: 0 };
       }
     },
 
@@ -24820,6 +25481,12 @@ const STR = {
   quality: ['画质', 'Graphics quality'],
   qualityHigh: ['高', 'High'],
   qualityLow: ['低（更流畅）', 'Low (faster)'],
+  qualityAuto: ['自动', 'Auto'],
+  qualityNow: ['当前：{k}', 'Now: {k}'],
+  qualityLowShort: ['低', 'Low'],
+  qualityAutoSize: ['自动：没有显卡加速且画面较大，用「低」更流畅；窗口变小后自动回到「高」。', 'Auto: no GPU acceleration and a large view, so Low keeps it smooth; a smaller window goes back to High.'],
+  qualityAutoSlow: ['自动：本次运行帧率偏低，已改用「低」。', 'Auto: frames were slow this session, so it switched to Low.'],
+  qualitySlow: ['画面偏卡，画质已自动调为「低」', 'Frames were slow — graphics quality switched to Low'],
   renderer: ['画面', 'Graphics'],
   rendererAuto: ['自动', 'Auto'],
   renderer3d: ['3D', '3D'],
@@ -24830,6 +25497,7 @@ const STR = {
   r2dFallback: ['3D 画面无法启动，已改用 2D 画面', '3D graphics could not start — using 2D graphics'],
   r2dLost: ['3D 画面中断且无法恢复，已改用 2D 画面', 'The 3D view was lost and could not recover — switched to 2D graphics'],
   ctxRestoring: ['3D 画面正在恢复…', 'Restoring the 3D view…'],
+  r2dPartial: ['部分战场图像加载失败，单位或地面可能显示不对；刷新页面可重试', 'Some battlefield images failed to load — units or ground may look wrong; reload the page to retry'],
   dmgNumbers: ['伤害数字', 'Damage numbers'],
   autoCam: ['交战镜头', 'Battle camera'],
   autoCamOn: ['拉近前线', 'Close-up'],
@@ -25308,12 +25976,13 @@ __m[65] = await (async () => {
 const KEY = 'twilight-legion.v1';
 
 const DEFAULTS = {
+  v: 2,                // 2: 'quality' gained 'auto' (see read())
   lang: null,          // null = auto (navigator.language)
   master: 0.8,
   music: 0.35,
   sfx: 0.8,
   mute: false,
-  quality: 'high',
+  quality: 'auto',     // 画质: 'auto' (src/main.js picks high / low) | 'high' | 'low' — an explicit pick always wins
   renderer: 'auto',    // 画面: 'auto' (3D with hardware WebGL, else 2D) | '3d' | '2d' (pre-rendered sprites, no GPU)
   dmgNumbers: true,
   autoCam: true,       // battle close-up camera (renderer.setAutoFrame)
@@ -25330,7 +25999,13 @@ let data = { ...DEFAULTS };
 function read() {
   try {
     const raw = window.localStorage.getItem(KEY);
-    if (raw) data = { ...DEFAULTS, ...JSON.parse(raw) };
+    if (raw) {
+      const saved = JSON.parse(raw) || {};
+      // saves before v2 stored the then-default quality 'high' whether or not the player picked it: only an explicit
+      // 'low' is kept, 'high' becomes 'auto'
+      if (!(saved.v >= 2) && saved.quality === 'high') delete saved.quality;
+      data = { ...DEFAULTS, ...saved, v: DEFAULTS.v };
+    }
   } catch (e) { /* storage unavailable: keep defaults */ }
 }
 
@@ -25978,6 +26653,8 @@ __m[68] = await (async () => {
 //          fighter selects it instead of buying; right-click / Esc cancels.
 //   drag card → board: same machine, one gesture buys at most one unit.
 //   drag a placed fighter (build phase) → other cell (move / swap) or → the dock's sell zone (shows the refund).
+//   two fingers on the battlefield = the camera's pinch zoom: a second pointer going down cancels whatever the first
+//   one started (tap, fighter drag, card drag), and no stage pointer places / selects / moves anything until all are up.
 const { BUILD_COLS, BUILD_ROWS, cellCenter } = __m[0];
 const { UNITS } = __m[1];
 const { t, L } = __m[62];
@@ -25998,7 +26675,10 @@ const DRAG_PX = 7;
   float.appendChild(dragImg);
 
   // gesture state
-  let g = null;        // { kind:'stage'|'card'|'unit', id, x0, y0, moved, uid, unitId, cardEl }
+  let g = null;        // { kind:'stage'|'card'|'unit', id, x0, y0, moved, uid, unitId, cardEl, pointerId }
+  // pointers that went down on the battlefield and are not up yet; `multi` = a two-finger gesture (pinch) is running
+  const stagePtrs = new Set();
+  let multi = false;
   let lastPointer = { x: -1, y: -1, inside: false, type: 'mouse' };
   let lastCellKey = '';
 
@@ -26237,6 +26917,16 @@ const DRAG_PX = 7;
 
   // ───────────────────────────── pointer handlers
   function onStageDown(e) {
+    // a primary pointer starts a new interaction: forget pointers whose 'up' never reached us (left the window, …)
+    if (e.isPrimary) { stagePtrs.clear(); multi = false; }
+    stagePtrs.add(e.pointerId);
+    if (multi || stagePtrs.size > 1 || (!e.isPrimary && g && g.pointerId !== e.pointerId)) {
+      // a second finger: this is a pinch (the camera zooms). Drop what the first finger started, show no preview.
+      multi = true;
+      abortGesture();
+      setGhost(null); lastCellKey = ''; hideTip();
+      return;
+    }
     lastPointer = { x: e.clientX, y: e.clientY, inside: true, type: e.pointerType || 'mouse' };
     if (e.button === 2) return; // context menu handles cancel
     if (e.button !== 0 && e.pointerType === 'mouse') return;
@@ -26250,6 +26940,8 @@ const DRAG_PX = 7;
   }
 
   function onMove(e) {
+    if (multi && stagePtrs.has(e.pointerId)) return;              // a pinch finger: the camera's
+    if (g && g.pointerId !== undefined && e.pointerId !== g.pointerId) return;   // not the gesture's pointer
     lastPointer.x = e.clientX;
     lastPointer.y = e.clientY;
     lastPointer.type = e.pointerType || 'mouse';
@@ -26278,7 +26970,13 @@ const DRAG_PX = 7;
   }
 
   function onUp(e) {
+    const wasStage = stagePtrs.delete(e.pointerId);
+    if (multi) {
+      if (!stagePtrs.size) multi = false;
+      if (wasStage) return;     // lifting a pinch finger is never a tap / drop
+    }
     if (!g) return;
+    if (g.pointerId !== undefined && e.pointerId !== g.pointerId) return;
     const gg = g;
     const x = e.clientX, y = e.clientY;
     if (gg.kind === 'cardDrag') {
@@ -26299,11 +26997,18 @@ const DRAG_PX = 7;
     actions.clickStage(x, y);
   }
 
-  function onCancel() {
+  /** Drop the running gesture without acting on it (pointercancel, a second finger, Esc / right-click). */
+  function abortGesture() {
     if (!g) return;
     if (g.kind === 'unitDrag') endUnitDrag(0, 0, true, g);
-    if (g.kind === 'cardDrag') { cameraInput(true); disarm(); }
+    if (g.kind === 'cardDrag') { cameraInput(true); hideDragImg(); disarm(); }
     g = null;
+  }
+
+  function onCancel(e) {
+    if (stagePtrs.delete(e.pointerId) && !stagePtrs.size) multi = false;
+    if (g && g.pointerId !== undefined && e.pointerId !== g.pointerId) return;
+    abortGesture();
   }
 
   function onContext(e) {
@@ -26319,7 +27024,7 @@ const DRAG_PX = 7;
 
   /** Esc / right-click: cancel drags, then armed state. Returns true if something was cancelled. */
   function cancel() {
-    if (g && (g.kind === 'unitDrag' || g.kind === 'cardDrag')) { onCancel(); ctx.audio.play('Cancel', { vol: 0.6 }); return true; }
+    if (g && (g.kind === 'unitDrag' || g.kind === 'cardDrag')) { abortGesture(); ctx.audio.play('Cancel', { vol: 0.6 }); return true; }
     if (view.armed) { disarm(); ctx.audio.play('Cancel', { vol: 0.6 }); return true; }
     return false;
   }
@@ -26662,21 +27367,27 @@ const { cellCenter } = __m[0];
     if (!f) f = { x: p.x, y: p.y + 40 };
     let x, y;
     const gap = 46;
+    // vertical room: the battlefield, or the whole screen when the popover is taller than the battlefield (phone held
+    // sideways): it may then cover the HUD, but its buttons always stay on screen
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const inStage = ht + 12 <= sr.height;
+    const yTop = inStage ? sr.top + 6 : 8, yBot = inStage ? sr.bottom - 6 : vh - 8;
     if (sr.width < 640) {
       // narrow: above the head or below the feet (never on the unit), centred, clamped inside the battlefield
       x = clamp(p.x - w / 2, sr.left + 8, sr.right - w - 8);
       const above = p.y - ht - 10;
       const below = f.y + 16;
-      if (above >= sr.top + 6) y = above;
-      else if (below + ht <= sr.bottom - 6) y = below;
-      else y = (p.y - sr.top > sr.bottom - f.y) ? sr.top + 6 : sr.bottom - ht - 6;
-      y = clamp(y, sr.top + 6, Math.max(sr.top + 6, sr.bottom - ht - 6));
+      if (above >= yTop) y = above;
+      else if (below + ht <= yBot) y = below;
+      else y = (p.y - yTop > yBot - f.y) ? yTop : yBot - ht;
     } else {
       x = p.x + gap;
       if (x + w > sr.right - 10) x = p.x - gap - w;
       x = clamp(x, sr.left + 10, Math.max(sr.left + 10, sr.right - w - 10));
-      y = clamp(p.y - ht * 0.45, sr.top + 8, Math.max(sr.top + 8, sr.bottom - ht - 8));
+      y = p.y - ht * 0.45;
     }
+    y = clamp(y, yTop, Math.max(yTop, yBot - ht));
+    x = clamp(x, 4, Math.max(4, vw - w - 4));
     const key = `${Math.round(x)},${Math.round(y)}`;
     if (key !== lastPos) { lastPos = key; el.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`; }
   }
@@ -27159,9 +27870,10 @@ const { settings } = __m[65];
   }
 
   // ───────────────────────────── settings
+  let settingsRender = null;   // re-renders the open settings modal (refreshSettings)
   function showSettings() {
     const content = h('div.settings');
-    const render = () => {
+    const render = settingsRender = () => {
       const v = audio.volumes;
       const slider = (key, label) => {
         const inp = h('input', { type: 'range', min: 0, max: 100, step: 1, value: Math.round((v[key] ?? 0.8) * 100), 'aria-label': label,
@@ -27177,7 +27889,7 @@ const { settings } = __m[65];
         slider('music', t('volMusic')),
         slider('sfx', t('volSfx')),
         h('div.set-row', h('span.set-k', t('mute')), seg([[false, t('soundOn')], [true, t('mute')]], !!v.mute, (m) => { audio.setVolumes({ mute: m }); settings.set('mute', m); })),
-        h('div.set-row', h('span.set-k', t('quality')), seg([['high', t('qualityHigh')], ['low', t('qualityLow')]], settings.get('quality'), (q) => { settings.set('quality', q); ctx.applyQuality(q); })),
+        qualityRow(seg),
         h('div.set-row.set-renderer', h('span.set-k', t('renderer'), h('small.set-now', t('rendererNow', { k: ctx.app.rendererKind === '2d' ? '2D' : ctx.app.rendererKind === '3d' ? '3D' : '–' }))),
           seg([['auto', t('rendererAuto')], ['3d', t('renderer3d')], ['2d', t('renderer2d')]], settings.get('renderer') || 'auto',
             (v) => { Promise.resolve(ctx.app.setRendererPref(v)).then(() => { if (modals.isOpen('settings')) render(); }).catch((e) => console.error(e)); })),
@@ -27193,6 +27905,24 @@ const { settings } = __m[65];
     modals.open('settings', content, { cls: 'small' });
   }
 
+  /** The open settings modal shows the state again (the auto quality changed under it: window resize, slow frames). */
+  function refreshSettings() {
+    if (settingsRender && modals.isOpen('settings')) settingsRender();
+  }
+
+  /** 画质: 自动 / 高 / 低, the quality in use now, and why when 自动 picked 低 (src/main.js qualityInfo). */
+  function qualityRow(seg) {
+    const app = ctx.app;
+    const now = app.quality;
+    const pref = app.qualityPref || 'auto';
+    const info = app.qualityInfo || {};
+    const note = pref === 'auto' && now === 'low' ? t(info.reason === 'slow' ? 'qualityAutoSlow' : 'qualityAutoSize') : null;
+    const row = h('div.set-row.set-quality' + (note ? '.has-note' : ''),
+      h('span.set-k', t('quality'), h('small.set-now', t('qualityNow', { k: now === 'low' ? t('qualityLowShort') : now === 'high' ? t('qualityHigh') : '–' }))),
+      seg([['auto', t('qualityAuto')], ['high', t('qualityHigh')], ['low', t('qualityLow')]], pref, (q) => { app.setQualityPref(q); }));
+    return note ? [row, h('p.set-note', note)] : row;
+  }
+
   // ───────────────────────────── help (one page)
   function showHelp() {
     const content = h('div.help',
@@ -27202,7 +27932,7 @@ const { settings } = __m[65];
     modals.open('help', content, { cls: 'wide' });
   }
 
-  return { showIntro, showMenu, hideMenu, renderMenu, showLoading, setLoading, hideLoading, showFatal, showPause, showSettings, showHelp, menuState };
+  return { showIntro, showMenu, hideMenu, renderMenu, showLoading, setLoading, hideLoading, showFatal, showPause, showSettings, refreshSettings, showHelp, menuState };
 }
 
 ;return { "RACE_FACES": RACE_FACES, "createScreens": createScreens };
@@ -27718,7 +28448,8 @@ const { EGGS } = __m[10];
   ctx.popover = createPopover(ctx);
   ctx.codex = createCodex(ctx);
   ctx.openCodex = () => ctx.codex.open();
-  ctx.applyQuality = (q) => { try { ctx.renderer && ctx.renderer.setQuality && ctx.renderer.setQuality(q); } catch (e) { console.error(e); } };
+  // 画质 goes through the app: an explicit pick is stored and wins; 'auto' lets src/main.js choose per renderer / size
+  ctx.applyQuality = (q) => { try { ctx.app.setQualityPref(q); } catch (e) { console.error(e); } };
   ctx.applyAutoCam = (on) => { try { ctx.renderer && ctx.renderer.setAutoFrame && ctx.renderer.setAutoFrame(on); } catch (e) { /* optional */ } };
   ctx.applyDmgNumbers = (on) => {
     setClass(document.body, 'no-dmg-numbers', !on);
@@ -27976,13 +28707,15 @@ const { EGGS } = __m[10];
   }
 
   // ───────────────────────────── per-frame update
-  let lastW = 0;
+  let lastW = 0, lastH = 0;
   function update(state) {
     if (!ctx.match) return;
-    const w = window.innerWidth;
-    if (w !== lastW) {
+    const w = window.innerWidth, hh = window.innerHeight;
+    if (w !== lastW || hh !== lastH) {
       lastW = w;
-      const narrow = w <= 760;
+      lastH = hh;
+      // short labels on narrow screens and on phones held sideways (ui.css: max-width 760px / landscape max-height 520px)
+      const narrow = w <= 760 || (hh <= 520 && w > hh);
       if (narrow !== view.narrow) { view.narrow = narrow; ctx.hud.invalidate(); ctx.dock.invalidate(); }
       setClass(appEl, 'narrow', narrow);
     }
@@ -28104,6 +28837,11 @@ const { EGGS } = __m[10];
       ctx.popover.close();
       ctx.tutorial.finish(false);
       ctx.match = null;
+      // nothing of the old match may outlive it: a pausing modal left open (e.g. the wave-5 tactic choice under the
+      // pause menu) would sit over the menu and keep the NEXT match paused forever
+      ctx.modals.closeAll();
+      ctx.modals.hideWaveReport();
+      view.tacticModalOpen = false;
       clearTimeout(gameOverTimer);
       appEl.classList.remove('in-game');
       for (const id of ['topbar', 'intel', 'dock']) setHidden(document.getElementById(id), true);
@@ -28833,12 +29571,33 @@ async function ready(G) {
       await frames(4);
       const sc = me().board.find((b) => b.unitId === scoutId && !b.legendary);
       if (sc) {
+        const s0 = G.match.state, g0 = Math.floor(me().gold);
+        // what a click at the scout's cell meets (reported when the check fails: it failed ~1 run in 15 under the
+        // virtual-time budget, the camera still easing from the battle close-up back to the build view)
+        const probe = () => {
+          const hit = document.elementFromPoint(p.x, p.y);
+          const hs = hit ? hit.tagName.toLowerCase() + (hit.id ? '#' + hit.id : '') + (typeof hit.className === 'string' && hit.className ? '.' + hit.className.trim().split(/\s+/).slice(0, 2).join('.') : '') : 'none';
+          let pk = null;
+          try { pk = G.renderer.pickEntity(p.x, p.y); } catch (e) { pk = String(e); }
+          const d = G.renderer.debug ? G.renderer.debug() : {};
+          return `at ${Math.round(p.x)},${Math.round(p.y)} hit ${hs} pick ${pk && pk.uid === sc.uid ? 'scout' : JSON.stringify(pk)} frame ${d.frameMode} zoom ${d.zoom}`;
+        };
         p = cellXY(G, sc.col, sc.row);
+        const before = probe();
         await clickAt(p.x, p.y);
+        let retried = '';
+        if (!ui.popover.selection) {
+          // the click missed: let the camera settle, then click the scout where it is now (once)
+          retried = ` — retried (1st click: ${before})`;
+          await frames(40);
+          p = cellXY(G, sc.col, sc.row);
+          await clickAt(p.x, p.y);
+        }
         const evoBtn = ui.popover.el.querySelector(`[data-act="evolve"][data-egg="${egg}"]`);
+        const why = `cost ${costE}, gold before ${g0}, ${s0.phase} w${s0.wave}, popover ${ui.popover.selection ? 'open' : 'closed'}, button ${evoBtn ? (evoBtn.disabled ? 'disabled' : 'ok') : 'missing'}, modals [${ui.modals.stack.map((m) => m.id)}], ${probe()}`;
         if (evoBtn) await clickEl(evoBtn);
         const ev = me().board.find((b) => b.uid === sc.uid);
-        check('evolve', ev && ev.egg === egg, ev ? `formId ${ev.formId}, gold ${Math.floor(me().gold)}` : 'unit gone');
+        check('evolve', ev && ev.egg === egg, (ev ? `formId ${ev.formId}, gold ${Math.floor(me().gold)}` + (ev.egg === egg ? '' : ` (${why})`) : 'unit gone') + retried);
       } else check('evolve', false, 'no scout left');
     }
   } catch (e) {
@@ -28953,7 +29712,7 @@ async function ready(G) {
 __m[78] = await (async () => {
 // 暮光军团 · Twilight Legion — boot, menus → createMatch → renderer + UI → main loop (CONTRACT §8).
 // URL params (testing / demos): ?autostart=1&race=elf|orc&ai=easy|normal|hard&seed=7&speed=1..3 (or >3 = test speed)
-//   &skipIntro=1&autoplay=1 (AI plays the human seat)&lang=zh|en&tutorial=0&quality=low&mute=1&opp=elf|orc
+//   &skipIntro=1&autoplay=1 (AI plays the human seat)&lang=zh|en&tutorial=0&quality=auto|high|low&mute=1&opp=elf|orc
 //   &selftest=1 (scripted UI interaction test, prints PASS/FAIL into <pre id="selftest-out">)
 //   &demo=<state> (screenshot states, see src/ui/testkit.js)  &stub=1 (2D stand-in renderer, no WebGL; dev only)
 //   &renderer=auto|3d|2d (overrides the 「画面」 setting for this page load: auto = 3D with hardware WebGL, else the
@@ -29010,7 +29769,7 @@ let lastCfg = null;
 let starting = false;
 const testSpeed = P.speed && P.speed > 3 ? P.speed : null;
 
-function publish() { window.__game = { match, renderer, ui, audio, app, params: P, rendererInfo, get gpu() { return gpuInfo(); } }; }
+function publish() { window.__game = { match, renderer, ui, audio, app, params: P, rendererInfo, qualityInfo, get gpu() { return gpuInfo(); } }; }
 
 // ───────────────────────────── renderer choice: 3D (Three.js) or 2D (pre-rendered sprites, no WebGL)
 // auto = 3D only with HARDWARE WebGL: a context can be created and its renderer is not a software rasterizer
@@ -29056,6 +29815,72 @@ const lostAt = [];
 let lostTimer = 0;
 const isWebGLError = (e) => !!e && (e.code === 'WEBGL_UNAVAILABLE' || /webgl|context|gpu/i.test(String(e.message || e)));
 
+// ───────────────────────────── graphics quality ('high' | 'low', as used by the renderer)
+// An explicit choice always wins: URL ?quality=high|low (this page load) or the 「画质」 setting. 'auto' (the default)
+// is 'high', except for the 2D renderer without a hardware GPU, whose CPU canvas costs about the same per device pixel:
+//  • size: 'low' when the battlefield is larger than AUTO_LOW_MPX device megapixels, 'high' again only below
+//    AUTO_HIGH_MPX (a band, so a layout change near the limit does not toggle it); re-evaluated on every resize;
+//  • measured cost: real frames slower than SLOW_FRAME_S (EMA over ~1 s) for SLOW_HOLD_S seconds of play switch to
+//    'low' for the rest of the page session (one way only: it never switches back by itself, so it cannot flap).
+// Numbers: headful Chrome --disable-gpu on this 2-vCPU VPS, wave 15 / 22 battles (docs/RENDER2D.md, verify.py perf).
+const AUTO_LOW_MPX = 0.9, AUTO_HIGH_MPX = 0.75;
+const SLOW_FRAME_S = 0.045, SLOW_HOLD_S = 8;
+const qualityInfo = { pref: 'auto', value: null, reason: null, mpx: 0, slow: false };
+const slowMon = { ema: 1 / 60, over: 0, warm: 0 };
+
+/** 'auto' | 'high' | 'low': the URL parameter for this page load, else the 「画质」 setting. */
+function qualityPref() {
+  const q = P.quality || settings.get('quality');
+  return q === 'high' || q === 'low' ? q : 'auto';
+}
+/** Battlefield size in device megapixels as the 2D renderer draws it (it caps the pixel ratio at 1.5). */
+function stageMpx() {
+  const r = stageEl.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  return (r.width * dpr * r.height * dpr) / 1e6;
+}
+function pickQuality(kind) {
+  const pref = qualityPref();
+  qualityInfo.pref = pref;
+  qualityInfo.mpx = +stageMpx().toFixed(2);
+  if (pref !== 'auto') { qualityInfo.reason = 'chosen'; return pref; }
+  if (kind !== '2d' || gpuInfo().hardware) { qualityInfo.reason = null; return 'high'; }
+  if (qualityInfo.slow) { qualityInfo.reason = 'slow'; return 'low'; }
+  const wasBig = qualityInfo.reason === 'size' && qualityInfo.value === 'low';
+  const big = qualityInfo.mpx > AUTO_LOW_MPX || (wasBig && qualityInfo.mpx >= AUTO_HIGH_MPX);
+  qualityInfo.reason = big ? 'size' : null;
+  return big ? 'low' : 'high';
+}
+/** Set the renderer's quality to the current pick (no-op when it already has it). Returns the value. */
+function applyQuality(force) {
+  if (!renderer || !renderer.setQuality) { qualityInfo.value = null; return null; }
+  const q = pickQuality(rendererKind);
+  const changed = qualityInfo.value !== q || renderer.quality !== q;
+  qualityInfo.value = q;
+  if (changed || force) {
+    slowMon.warm = 0;
+    try { renderer.setQuality(q); } catch (e) { console.error(e); }
+    // the settings row shows the quality in use: keep it true when 自动 switches under an open settings modal
+    if (changed) try { ui.screens.refreshSettings(); } catch (e) { /* no UI yet */ }
+  }
+  return q;
+}
+/** Measured cost (rAF interval, s): see the block comment above. Only the auto pick on a 2D view without a GPU. */
+function watchFrameCost(dt) {
+  if (P.selftest || P.demo) return;   // scripted checks and screenshot states stay deterministic
+  if (qualityInfo.slow || qualityInfo.pref !== 'auto' || qualityInfo.value !== 'high' || rendererKind !== '2d' || gpuInfo().hardware) return;
+  if (!match || dt <= 0 || dt > 1 || ui.modals.isOpen('loading')) { slowMon.warm = 0; slowMon.over = 0; return; }
+  slowMon.ema += (dt - slowMon.ema) * Math.min(1, dt);
+  slowMon.warm += dt;
+  if (slowMon.warm < 4) { slowMon.over = 0; return; }   // caches settle after a start / swap / resize
+  slowMon.over = slowMon.ema > SLOW_FRAME_S ? slowMon.over + dt : 0;
+  if (slowMon.over < SLOW_HOLD_S) return;
+  qualityInfo.slow = true;
+  applyQuality();
+  console.info('[quality] frames slower than', SLOW_FRAME_S * 1000, 'ms for', SLOW_HOLD_S, 's: auto quality → low');
+  ui.modals.toast(esc(both('qualitySlow')), { kind: 'info', ms: 6000 });
+}
+
 function disposeRenderer() {
   const r = renderer;
   renderer = null;
@@ -29065,19 +29890,42 @@ function disposeRenderer() {
 }
 
 // the 3D view lost its WebGL context: it normally comes back (the browser restores it); if it keeps getting lost
-// (3 times in 2 minutes) or does not come back within 6 s, continue the match with the 2D renderer
+// (3 times in 2 minutes) or does not come back within 6 s, continue the match with the 2D renderer.
+// Only a VISIBLE page is judged: browsers (phones above all) drop the contexts of pages in the background and restore
+// them once the page is visible again, so a loss while hidden is not counted, and the 6 s start when it is visible.
+function contextStillLost() {
+  try { return rendererKind === '3d' && !!renderer && renderer.renderer.getContext().isContextLost(); } catch (e) { return rendererKind === '3d'; }
+}
 function onContextLost() {
+  clearTimeout(lostTimer);
+  if (document.hidden) { awaitVisible(); return; }
   const now = performance.now();
   while (lostAt.length && now - lostAt[0] > 120000) lostAt.shift();
   lostAt.push(now);
   if (lostAt.length >= 3) { fallbackTo2D('context'); return; }
   ui.modals.toast(esc(both('ctxRestoring')), { kind: 'bad', ms: 5000 });
+  armLostCheck();
+}
+function armLostCheck() {
   clearTimeout(lostTimer);
   lostTimer = setTimeout(() => {
-    let lost = false;
-    try { lost = rendererKind === '3d' && renderer && renderer.renderer.getContext().isContextLost(); } catch (e) { lost = true; }
-    if (lost) fallbackTo2D('context');
+    if (document.hidden) { awaitVisible(); return; }   // hidden in the meantime: judge once it is back
+    if (contextStillLost()) fallbackTo2D('context');
   }, 6000);
+}
+let visWait = false;
+function awaitVisible() {
+  if (visWait) return;
+  visWait = true;
+  const onVis = () => {
+    if (document.hidden) return;
+    document.removeEventListener('visibilitychange', onVis);
+    visWait = false;
+    if (!contextStillLost()) return;   // restored while hidden (the usual case)
+    ui.modals.toast(esc(both('ctxRestoring')), { kind: 'bad', ms: 5000 });
+    armLostCheck();
+  };
+  document.addEventListener('visibilitychange', onVis);
 }
 function fallbackTo2D(reason) {
   if (rendererKind !== '3d') return;
@@ -29095,7 +29943,7 @@ async function openRenderer(want) {
     try {
       renderer = await factory(stageEl, {
         onProgress: (p) => ui.screens.setLoading(p),
-        quality: P.quality || settings.get('quality') || 'high',
+        quality: pickQuality(kind),
         onContextLost,
       });
       rendererKind = kind;
@@ -29114,7 +29962,8 @@ async function openRenderer(want) {
       return false;
     }
   }
-  try { renderer.setQuality && renderer.setQuality(P.quality || settings.get('quality') || 'high'); } catch (e) { console.error(e); }
+  qualityInfo.value = null;
+  applyQuality(true);
   Object.assign(rendererInfo, { kind, pref: rendererPref(), fallback: fellBack || rendererInfo.fallback, gpu: gpuInfo().name || null });
   if (fellBack) rendererInfo.notice = 'fallback';
   else if (kind === '2d' && rendererPref() === 'auto') rendererInfo.notice = 'auto';
@@ -29122,10 +29971,32 @@ async function openRenderer(want) {
   return true;
 }
 
-/** One small toast when the 2D renderer was chosen for the player (auto without a GPU, or 3D failed). */
+/** Sprite files the 2D renderer could not load (its bank's own record when it keeps one, else manifest vs loaded). */
+function spriteLoadIssues(r) {
+  const s = r && r.kind === '2d' ? r.sprites : null;
+  if (!s || !s.manifest) return [];
+  if (Array.isArray(s.failed)) return s.failed.slice();
+  const out = Object.keys(s.manifest.atlases || {}).filter((n) => !(s.images && s.images.has(n)));
+  if (s.manifest.backdrop && s.manifest.backdrop.image && !s.backdrop) out.push('backdrop');
+  return out;
+}
+
+/** One small toast when the 2D renderer was chosen for the player (auto without a GPU, or 3D failed); one more, per
+ *  2D renderer, when some of its sprite files failed to load (units / ground would look wrong without a word). */
+function spriteNotice() {
+  const r = renderer;
+  if (!r || r.__issuesNoted || !ui.modals) return;
+  r.__issuesNoted = true;
+  const issues = spriteLoadIssues(r);
+  rendererInfo.assetIssues = issues.length ? issues : null;
+  if (!issues.length) return;
+  console.warn('[renderer] 2D sprite files failed to load:', issues.join(', '));
+  if (!P.selftest && !P.demo) ui.modals.toast(esc(both('r2dPartial')), { kind: 'bad', ms: 9000 });
+}
 function rendererNotice() {
-  if (!rendererInfo.notice || noticeShown || !ui.modals) return;
-  if (P.selftest || P.demo) return;
+  spriteNotice();
+  if (!ui.modals || P.selftest || P.demo) return;
+  if (!rendererInfo.notice || noticeShown) return;
   noticeShown = true;
   ui.modals.toast(esc(both(rendererInfo.notice === 'auto' ? 'r2dAuto' : 'r2dFallback')), { kind: 'info', ms: 6000 });
 }
@@ -29145,10 +30016,11 @@ async function swapRenderer(kind, reason) {
       renderer.attach(m, { localPlayer: 0 });
       ui.setRenderer(renderer);
       try { renderer.resize(); } catch (e) { /* ignore */ }
+      applyQuality();
     }
     if (m) ui.screens.hideLoading();
     publish();
-    if (reason === 'context') ui.modals.toast(esc(both('r2dLost')), { kind: 'info', ms: 6000 });
+    if (reason === 'context' || reason === 'frame') { ui.modals.toast(esc(both('r2dLost')), { kind: 'info', ms: 6000 }); spriteNotice(); }
     else rendererNotice();
     return true;
   } finally {
@@ -29192,6 +30064,8 @@ const app = {
       if (P.autoplay) match.setAI(0, 'normal');
       ui.screens.hideLoading();
       try { renderer.resize(); } catch (e) { /* ignore */ }
+      applyQuality();   // the in-game layout (HUD + dock) sets the battlefield size
+      slowMon.warm = 0;
       audio.startMusic();
       publish();
       rendererNotice();
@@ -29220,6 +30094,18 @@ const app = {
     return { kind: rendererKind, switched: true };
   },
   get rendererKind() { return rendererKind; },
+  /** 「画质」 setting changed ('auto' | 'high' | 'low'): applies at once; returns the quality now in use. */
+  setQualityPref(pref) {
+    P.quality = null;   // the player's choice now wins over a ?quality= URL parameter
+    settings.set('quality', pref === 'high' || pref === 'low' ? pref : 'auto');
+    qualityInfo.slow = false;   // picking 自动 again gives the measured-cost check a fresh start
+    slowMon.over = 0;
+    return applyQuality();
+  },
+  get qualityPref() { return qualityPref(); },
+  /** The quality the renderer uses now ('high' | 'low'; null without a renderer) and why: qualityInfo.reason. */
+  get quality() { return renderer && renderer.setQuality ? qualityInfo.value : null; },
+  get qualityInfo() { return qualityInfo; },
   restart() {
     if (!lastCfg) return;
     const cfg = { ...lastCfg };
@@ -29240,10 +30126,16 @@ const ui = createUI({ audio, app });
 publish();
 
 // keep the renderer sized to the battlefield cell of the layout grid
+// (and re-evaluate the auto quality, which depends on that size)
+const onStageResize = () => {
+  if (!renderer) return;
+  try { renderer.resize(); } catch (e) { /* ignore */ }
+  if (!swapping && !starting) applyQuality();
+};
 if (window.ResizeObserver) {
-  new ResizeObserver(() => { if (renderer) { try { renderer.resize(); } catch (e) { /* ignore */ } } }).observe(stageEl);
+  new ResizeObserver(onStageResize).observe(stageEl);
 } else {
-  window.addEventListener('resize', () => { if (renderer) renderer.resize(); });
+  window.addEventListener('resize', onStageResize);
 }
 
 // optional title font (graceful fallback offline)
@@ -29262,6 +30154,7 @@ let lastTick = null;
 let lastRender = null;
 let lastRaf = -1e9;
 let frameNo = 0;
+const frameErr = { n: 0, since: 0 };   // consecutive renderer.frame() failures (tick)
 const debugEl = Q.has('debug') ? document.body.appendChild(Object.assign(document.createElement('pre'), { id: 'debug-out' })) : null;
 if (debugEl) debugEl.style.cssText = 'position:fixed;right:8px;bottom:8px;z-index:9999;margin:0;padding:6px 8px;background:rgba(0,0,0,.8);color:#9f9;font:11px/1.3 monospace;pointer-events:none';
 
@@ -29288,7 +30181,16 @@ function tick(render, updateUI = true) {
   if (render) {
     const rdt = lastRender === null ? dt : Math.min(0.25, Math.max(0, (now - lastRender) / 1000));
     lastRender = now;
-    try { renderer.frame(rdt, { paused }); } catch (e) { console.error(e); }
+    try {
+      renderer.frame(rdt, { paused });
+      frameErr.n = 0;
+    } catch (e) {
+      // a 3D view that throws on every frame (a mobile GPU driver bug, …) would freeze the picture with nothing
+      // but console spam: log the first errors, and when 3D frames keep failing for 2 s continue the match in 2D
+      if (!frameErr.n++) frameErr.since = now;
+      if (frameErr.n <= 3) console.error(e);
+      if (rendererKind === '3d' && frameErr.n >= 10 && now - frameErr.since > 2000) { frameErr.n = 0; fallbackTo2D('frame'); }
+    }
   }
   if (updateUI) ui.update(match.state, dt);
 }
@@ -29297,8 +30199,11 @@ function tick(render, updateUI = true) {
 function rafLoop() {
   if (window.__halt) return;
   requestAnimationFrame(rafLoop);
-  lastRaf = performance.now();
+  const now = performance.now();
+  const iv = (now - lastRaf) / 1000;
+  lastRaf = now;
   tick(true);
+  if (renderer) watchFrameCost(iv);
 }
 
 let starvedTicks = 0;
